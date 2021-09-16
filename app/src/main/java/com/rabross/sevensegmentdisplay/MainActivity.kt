@@ -9,6 +9,7 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
@@ -22,6 +23,10 @@ import kotlin.time.ExperimentalTime
 @ExperimentalTime
 class MainActivity : ComponentActivity() {
 
+    private val redLed = SingleColorLed(Color.Red, Color.DarkGray)
+    private val greeneLed = SingleColorLed(Color.Green, Color.DarkGray)
+    private val blueLed = SingleColorLed(Color.Blue, Color.DarkGray)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -30,15 +35,15 @@ class MainActivity : ComponentActivity() {
             val animationRightToLeftFill = remember { mutableStateOf(0) }
             val animationRoundOutsideDoubleSeg = remember { mutableStateOf(0) }
 
-            Surface {
+            Surface(color = Color.Black) {
                 Column {
                     Row(modifier = Modifier.weight(1f)) {
-                        SevenSegmentDisplay(modifier = Modifier.weight(1f),decoder = BinaryDecoder (digit.value))
-                        SevenSegmentDisplay(modifier = Modifier.weight(1f),decoder = BinaryDecoder(animationFallFill.value))
+                        SevenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryDecoder (digit.value))
+                        SevenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryDecoder(animationFallFill.value), led = redLed)
                     }
                     Row(modifier = Modifier.weight(1f)) {
-                        SevenSegmentDisplay(modifier = Modifier.weight(1f),decoder = BinaryDecoder (animationRightToLeftFill.value))
-                        SevenSegmentDisplay(modifier = Modifier.weight(1f),decoder = BinaryDecoder(animationRoundOutsideDoubleSeg.value))
+                        SevenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryDecoder (animationRightToLeftFill.value), led = greeneLed)
+                        SevenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryDecoder(animationRoundOutsideDoubleSeg.value), led = blueLed)
                     }
                 }
 
