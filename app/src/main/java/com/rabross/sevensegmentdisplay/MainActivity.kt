@@ -55,7 +55,7 @@ class MainActivity : ComponentActivity() {
             }
 
             singleDigitCountFlow
-                .onEach { number -> digit.value = number.mapToDigit() }
+                .onEach { number -> digit.value = BinaryDecoder.mapToDigit(number) }
                 .launchIn(lifecycleScope)
 
             Animations.rightToLeftFill
