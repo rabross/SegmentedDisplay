@@ -1,3 +1,5 @@
+[![](https://jitpack.io/v/rabross/SevenSegmentDisplay.svg)](https://jitpack.io/#rabross/SevenSegmentDisplay)
+
 # SevenSegmentDisplay
 A 7-segment display for Android build with Jetpack Compose
 
