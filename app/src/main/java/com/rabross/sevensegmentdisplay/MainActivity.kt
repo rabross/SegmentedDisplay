@@ -23,7 +23,6 @@ import kotlin.time.ExperimentalTime
 @ExperimentalTime
 class MainActivity : ComponentActivity() {
 
-    private val redLed = SingleColorLed(Color.Red, Color.DarkGray)
     private val greeneLed = SingleColorLed(Color.Green, Color.DarkGray)
     private val blueLed = SingleColorLed(Color.Blue, Color.DarkGray)
 
@@ -31,38 +30,40 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val digit = remember { mutableStateOf(0) }
-            val animationFallFill = remember { mutableStateOf(0) }
             val animationRightToLeftFill = remember { mutableStateOf(0) }
             val animationRoundOutsideDoubleSeg = remember { mutableStateOf(0) }
 
             Surface(color = Color.Black) {
                 Column {
+                    SevenSegmentDisplay(
+                        modifier = Modifier.weight(1f),
+                        decoder = BinaryDecoder(digit.value)
+                    )
                     Row(modifier = Modifier.weight(1f)) {
-                        SevenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryDecoder (digit.value))
-                        SevenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryDecoder(animationFallFill.value), led = redLed)
-                    }
-                    Row(modifier = Modifier.weight(1f)) {
-                        SevenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryDecoder (animationRightToLeftFill.value), led = greeneLed)
-                        SevenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryDecoder(animationRoundOutsideDoubleSeg.value), led = blueLed)
+                        SevenSegmentDisplay(
+                            modifier = Modifier.weight(1f),
+                            decoder = BinaryDecoder(animationRightToLeftFill.value),
+                            led = greeneLed
+                        )
+                        SevenSegmentDisplay(
+                            modifier = Modifier.weight(1f),
+                            decoder = BinaryDecoder(animationRoundOutsideDoubleSeg.value),
+                            led = blueLed
+                        )
                     }
                 }
-
             }
 
             singleDigitCountFlow
                 .onEach { number -> digit.value = number.mapToDigit() }
                 .launchIn(lifecycleScope)
 
-            Animations.fallFill
-                .onEach { animationFallFill. value = it }
-                .launchIn(lifecycleScope)
-
             Animations.rightToLeftFill
-                .onEach { animationRightToLeftFill. value = it }
+                .onEach { animationRightToLeftFill.value = it }
                 .launchIn(lifecycleScope)
 
             Animations.roundOutsideDoubleSeg
-                .onEach { animationRoundOutsideDoubleSeg. value = it }
+                .onEach { animationRoundOutsideDoubleSeg.value = it }
                 .launchIn(lifecycleScope)
         }
     }
