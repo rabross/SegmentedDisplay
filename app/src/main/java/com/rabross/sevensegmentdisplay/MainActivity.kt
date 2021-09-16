@@ -5,18 +5,19 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Surface
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.isActive
+import java.util.*
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 
@@ -29,15 +30,26 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val digit = remember { mutableStateOf(0) }
             val animationRightToLeftFill = remember { mutableStateOf(0) }
             val animationRoundOutsideDoubleSeg = remember { mutableStateOf(0) }
 
+            val hourFirst = remember { mutableStateOf(0) }
+            val hourSecond = remember { mutableStateOf(0) }
+            val minuteFirst = remember { mutableStateOf(0) }
+            val minuteSecond = remember { mutableStateOf(0) }
+            val secondFirst = remember { mutableStateOf(0) }
+            val secondSecond = remember { mutableStateOf(0) }
+
             Surface(color = Color.Black) {
-                Column {
-                    SevenSegmentDisplay(
+                Column(modifier = Modifier.padding(24.dp)) {
+                    DigitalClockDisplay(
                         modifier = Modifier.weight(1f),
-                        decoder = BinaryDecoder(digit.value)
+                        hourFirst.value,
+                        hourSecond.value,
+                        minuteFirst.value,
+                        minuteSecond.value,
+                        secondFirst.value,
+                        secondSecond.value
                     )
                     Row(modifier = Modifier.weight(1f)) {
                         SevenSegmentDisplay(
@@ -54,10 +66,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
 
-            singleDigitCountFlow
-                .onEach { number -> digit.value = BinaryDecoder.mapToDigit(number) }
-                .launchIn(lifecycleScope)
-
             Animations.rightToLeftFill
                 .onEach { animationRightToLeftFill.value = it }
                 .launchIn(lifecycleScope)
@@ -65,14 +73,46 @@ class MainActivity : ComponentActivity() {
             Animations.roundOutsideDoubleSeg
                 .onEach { animationRoundOutsideDoubleSeg.value = it }
                 .launchIn(lifecycleScope)
+
+            tickerFlow(Duration.seconds(1))
+                .map { Calendar.getInstance() }
+                .distinctUntilChanged { old, new ->
+                    old.get(Calendar.SECOND) == new.get(Calendar.SECOND)
+                }
+                .onEach { calendar ->
+                    val hour = calendar.get(Calendar.HOUR_OF_DAY)
+                    val hourDigits = hour.splitDigits()
+                    hourFirst.value = BinaryDecoder.mapToDigit(hourDigits.first)
+                    hourSecond.value = BinaryDecoder.mapToDigit(hourDigits.second)
+
+                    val minute = calendar.get(Calendar.MINUTE)
+                    val minuteDigits = minute.splitDigits()
+                    minuteFirst.value = BinaryDecoder.mapToDigit(minuteDigits.first)
+                    minuteSecond.value = BinaryDecoder.mapToDigit(minuteDigits.second)
+
+                    val second = calendar.get(Calendar.SECOND)
+                    val secondDigits = second.splitDigits()
+                    secondFirst.value = BinaryDecoder.mapToDigit(secondDigits.first)
+                    secondSecond.value = BinaryDecoder.mapToDigit(secondDigits.second)
+                }
+                .launchIn(lifecycleScope)
         }
     }
 
-    private val singleDigitCountFlow = flow {
+    private fun tickerFlow(period: Duration) = flow {
         while (currentCoroutineContext().isActive) {
-            (0..10).forEach { number ->
-                emit(number)
-                delay(Duration.seconds(1))
+            emit(Unit)
+            delay(period)
+        }
+    }
+
+    private fun Int.splitDigits(): Pair<Int, Int> {
+        return when {
+            this <= 0 -> 0 to 0
+            else -> {
+                val secondDigit: Int = this % 10
+                val firstDigit: Int = if (this < 10) 0 else this / 10 % 10
+                firstDigit to secondDigit
             }
         }
     }

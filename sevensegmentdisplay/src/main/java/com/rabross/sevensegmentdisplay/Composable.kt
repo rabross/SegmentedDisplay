@@ -1,7 +1,10 @@
 package com.rabross.sevensegmentdisplay
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -11,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
@@ -92,4 +96,45 @@ private fun DrawScope.drawVerticalSegment(led: Led, offset: Offset, size: Size, 
     hexagonPath.lineTo(centerX + radius - spacing, centerY + size.height/2)
     hexagonPath.moveTo(centerX, centerY + radius + size.height/2 - spacing)
     drawPath(hexagonPath, led.signal(signal))
+}
+
+
+@Composable
+fun DigitalClockDisplay(
+    modifier: Modifier = Modifier,
+    hourFirst: Int = 0,
+    hourSecond: Int = 0,
+    minuteFirst: Int = 0,
+    minuteSecond: Int = 0,
+    secondFirst: Int = 0,
+    secondSecond: Int = 0,
+) {
+    Row(modifier = modifier) {
+        SevenSegmentDisplay(
+            modifier = Modifier.weight(1f),
+            decoder = BinaryDecoder(hourFirst)
+        )
+        SevenSegmentDisplay(
+            modifier = Modifier.weight(1f),
+            decoder = BinaryDecoder(hourSecond)
+        )
+        Spacer(modifier = Modifier.width(24.dp))
+        SevenSegmentDisplay(
+            modifier = Modifier.weight(1f),
+            decoder = BinaryDecoder(minuteFirst)
+        )
+        SevenSegmentDisplay(
+            modifier = Modifier.weight(1f),
+            decoder = BinaryDecoder(minuteSecond)
+        )
+        Spacer(modifier = Modifier.width(24.dp))
+        SevenSegmentDisplay(
+            modifier = Modifier.weight(1f),
+            decoder = BinaryDecoder(secondFirst)
+        )
+        SevenSegmentDisplay(
+            modifier = Modifier.weight(1f),
+            decoder = BinaryDecoder(secondSecond)
+        )
+    }
 }
