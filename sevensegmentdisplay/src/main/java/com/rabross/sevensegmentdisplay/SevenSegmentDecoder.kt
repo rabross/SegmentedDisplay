@@ -1,6 +1,6 @@
 package com.rabross.sevensegmentdisplay
 
-interface Decoder {
+interface SevenSegmentDecoder {
     val a: Int
     val b: Int
     val c: Int
@@ -10,7 +10,7 @@ interface Decoder {
     val g: Int
 }
 
-class BinaryDecoder(data: Int = 0) : Decoder {
+class BinarySevenSegmentDecoder(data: Int = 0) : SevenSegmentDecoder {
     override val a = data and 0b000000001
     override val b = data and 0b000000010
     override val c = data and 0b000000100
@@ -36,4 +36,14 @@ class BinaryDecoder(data: Int = 0) : Decoder {
             }
         }
     }
+}
+
+interface DelimiterDecoder {
+    val a: Int
+    val b: Int
+}
+
+class BinaryDelimiterDecoder(data: Int = 0) : DelimiterDecoder {
+    override val a = data and 0b000000001
+    override val b = data and 0b000000010
 }

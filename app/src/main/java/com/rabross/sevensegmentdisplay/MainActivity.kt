@@ -49,22 +49,23 @@ class MainActivity : ComponentActivity() {
                         minuteFirst.value,
                         minuteSecond.value,
                         secondFirst.value,
-                        secondSecond.value
+                        secondSecond.value,
+                        3
                     )
                     Row(Modifier.weight(1f)) {
                         SevenSegmentDisplay(
                             modifier = Modifier.weight(1f),
-                            decoder = BinaryDecoder(animationFallFill.value),
+                            decoder = BinarySevenSegmentDecoder(animationFallFill.value),
                             led = redLed
                         )
                         SevenSegmentDisplay(
                             modifier = Modifier.weight(1f),
-                            decoder = BinaryDecoder(animationRightToLeftFill.value),
+                            decoder = BinarySevenSegmentDecoder(animationRightToLeftFill.value),
                             led = greenLed
                         )
                         SevenSegmentDisplay(
                             modifier = Modifier.weight(1f),
-                            decoder = BinaryDecoder(animationRoundOutsideDoubleSeg.value),
+                            decoder = BinarySevenSegmentDecoder(animationRoundOutsideDoubleSeg.value),
                             led = blueLed
                         )
                     }
@@ -91,18 +92,18 @@ class MainActivity : ComponentActivity() {
                 .onEach { calendar ->
                     val hour = calendar.get(Calendar.HOUR_OF_DAY)
                     val hourDigits = hour.splitDigits()
-                    hourFirst.value = BinaryDecoder.mapToDigit(hourDigits.first)
-                    hourSecond.value = BinaryDecoder.mapToDigit(hourDigits.second)
+                    hourFirst.value = BinarySevenSegmentDecoder.mapToDigit(hourDigits.first)
+                    hourSecond.value = BinarySevenSegmentDecoder.mapToDigit(hourDigits.second)
 
                     val minute = calendar.get(Calendar.MINUTE)
                     val minuteDigits = minute.splitDigits()
-                    minuteFirst.value = BinaryDecoder.mapToDigit(minuteDigits.first)
-                    minuteSecond.value = BinaryDecoder.mapToDigit(minuteDigits.second)
+                    minuteFirst.value = BinarySevenSegmentDecoder.mapToDigit(minuteDigits.first)
+                    minuteSecond.value = BinarySevenSegmentDecoder.mapToDigit(minuteDigits.second)
 
                     val second = calendar.get(Calendar.SECOND)
                     val secondDigits = second.splitDigits()
-                    secondFirst.value = BinaryDecoder.mapToDigit(secondDigits.first)
-                    secondSecond.value = BinaryDecoder.mapToDigit(secondDigits.second)
+                    secondFirst.value = BinarySevenSegmentDecoder.mapToDigit(secondDigits.first)
+                    secondSecond.value = BinarySevenSegmentDecoder.mapToDigit(secondDigits.second)
                 }
                 .launchIn(lifecycleScope)
         }
