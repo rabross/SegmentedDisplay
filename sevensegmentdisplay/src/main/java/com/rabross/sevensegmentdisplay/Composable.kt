@@ -4,7 +4,6 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -14,7 +13,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
@@ -26,11 +24,19 @@ fun SevenSegmentDisplayPreview() {
     }
 }
 
+@Preview
+@Composable
+fun DigitalClockDisplayPreview() {
+    Surface(Modifier.fillMaxSize()) {
+        DigitalClockDisplay()
+    }
+}
+
 @Composable
 fun SevenSegmentDisplay(
     modifier: Modifier = Modifier,
     segmentScale: Int = 3,
-    led: Led = SingleColorLed(Color.Red, Color.DarkGray),
+    led: Led = SingleColorLed(Color.Red, Color.DarkGray.copy(alpha = 0.3f)),
     decoder: Decoder = BinaryDecoder()
 ) {
     Canvas(modifier = modifier.fillMaxSize()) {
@@ -118,7 +124,7 @@ fun DigitalClockDisplay(
             modifier = Modifier.weight(1f),
             decoder = BinaryDecoder(hourSecond)
         )
-        Spacer(modifier = Modifier.width(24.dp))
+        Spacer(modifier = Modifier.weight(0.5f))
         SevenSegmentDisplay(
             modifier = Modifier.weight(1f),
             decoder = BinaryDecoder(minuteFirst)
@@ -127,7 +133,7 @@ fun DigitalClockDisplay(
             modifier = Modifier.weight(1f),
             decoder = BinaryDecoder(minuteSecond)
         )
-        Spacer(modifier = Modifier.width(24.dp))
+        Spacer(modifier = Modifier.weight(0.5f))
         SevenSegmentDisplay(
             modifier = Modifier.weight(1f),
             decoder = BinaryDecoder(secondFirst)

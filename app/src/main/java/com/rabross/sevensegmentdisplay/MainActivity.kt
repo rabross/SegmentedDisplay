@@ -3,9 +3,7 @@ package com.rabross.sevensegmentdisplay
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Surface
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,14 +22,16 @@ import kotlin.time.ExperimentalTime
 @ExperimentalTime
 class MainActivity : ComponentActivity() {
 
-    private val greeneLed = SingleColorLed(Color.Green, Color.DarkGray)
-    private val blueLed = SingleColorLed(Color.Blue, Color.DarkGray)
+    private val redLed = SingleColorLed(Color.Red, Color.Black)
+    private val greenLed = SingleColorLed(Color.Green, Color.Black)
+    private val blueLed = SingleColorLed(Color.Blue, Color.Black)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             val animationRightToLeftFill = remember { mutableStateOf(0) }
             val animationRoundOutsideDoubleSeg = remember { mutableStateOf(0) }
+            val animationFallFill = remember { mutableStateOf(0) }
 
             val hourFirst = remember { mutableStateOf(0) }
             val hourSecond = remember { mutableStateOf(0) }
@@ -43,7 +43,7 @@ class MainActivity : ComponentActivity() {
             Surface(color = Color.Black) {
                 Column(modifier = Modifier.padding(24.dp)) {
                     DigitalClockDisplay(
-                        modifier = Modifier.weight(1f),
+                        Modifier.weight(1f),
                         hourFirst.value,
                         hourSecond.value,
                         minuteFirst.value,
@@ -51,11 +51,16 @@ class MainActivity : ComponentActivity() {
                         secondFirst.value,
                         secondSecond.value
                     )
-                    Row(modifier = Modifier.weight(1f)) {
+                    Row(Modifier.weight(1f)) {
+                        SevenSegmentDisplay(
+                            modifier = Modifier.weight(1f),
+                            decoder = BinaryDecoder(animationFallFill.value),
+                            led = redLed
+                        )
                         SevenSegmentDisplay(
                             modifier = Modifier.weight(1f),
                             decoder = BinaryDecoder(animationRightToLeftFill.value),
-                            led = greeneLed
+                            led = greenLed
                         )
                         SevenSegmentDisplay(
                             modifier = Modifier.weight(1f),
@@ -72,6 +77,10 @@ class MainActivity : ComponentActivity() {
 
             Animations.roundOutsideDoubleSeg
                 .onEach { animationRoundOutsideDoubleSeg.value = it }
+                .launchIn(lifecycleScope)
+
+            Animations.fallFill
+                .onEach { animationFallFill.value = it }
                 .launchIn(lifecycleScope)
 
             tickerFlow(Duration.seconds(1))
