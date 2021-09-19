@@ -3,7 +3,7 @@
 # SevenSegmentDisplay
 A 7-segment display for Android build with Jetpack Compose
 
-<img alt="Screenshot 2021-09-19 at 19 47 54" src="https://user-images.githubusercontent.com/3681815/133939226-b383e517-09d4-4e1b-b150-355e4305d05e.png">
+<img alt="Screenshot 2021-09-19 at 20 47 25" src="https://user-images.githubusercontent.com/3681815/133940972-bdf921c4-7567-4bd6-b5b9-e8a5d1d3ba74.png">
 
 ## Customizable
 Highly customisable.
