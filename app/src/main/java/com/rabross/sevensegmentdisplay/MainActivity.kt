@@ -52,7 +52,7 @@ class MainActivity : ComponentActivity() {
                         secondSecond.value,
                         3
                     )
-                    Row(Modifier.weight(1f)) {
+                    Row(Modifier.weight(1f).fillMaxWidth()) {
                         SevenSegmentDisplay(
                             modifier = Modifier.weight(1f),
                             decoder = BinarySevenSegmentDecoder(animationFallFill.value),
