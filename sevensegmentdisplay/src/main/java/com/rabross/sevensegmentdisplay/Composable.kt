@@ -28,7 +28,7 @@ fun SevenSegmentDisplayPreview() {
 @Composable
 fun DigitalClockDisplayPreview() {
     Surface(Modifier.fillMaxSize()) {
-        DigitalClockDisplay()
+        DigitalClockSevenSegmentDisplay()
     }
 }
 
@@ -36,7 +36,7 @@ fun DigitalClockDisplayPreview() {
 @Composable
 fun FourteenSegmentDisplayPreview() {
     Surface(Modifier.fillMaxSize()) {
-        FourteenSegmentDisplay()
+        FourteenSegmentDisplay(decoder = BinaryFourteenSegmentDecoder(0b10000000))
     }
 }
 
@@ -155,7 +155,7 @@ private fun DrawScope.drawDelimiter(upDotColor: Color, downDotColor: Color, radi
 }
 
 @Composable
-fun DigitalClockDisplay(
+fun DigitalClockSevenSegmentDisplay(
     modifier: Modifier = Modifier,
     hourFirst: Int = 0,
     hourSecond: Int = 0,
@@ -194,16 +194,55 @@ fun DigitalClockDisplay(
         )
     }
 }
+@Composable
+fun DigitalClockFourteenSegmentDisplay(
+    modifier: Modifier = Modifier,
+    hourFirst: Int = 0,
+    hourSecond: Int = 0,
+    minuteFirst: Int = 0,
+    minuteSecond: Int = 0,
+    secondFirst: Int = 0,
+    secondSecond: Int = 0,
+    delimiterSignal: Int = 0
+) {
+    Row(modifier = modifier) {
+        FourteenSegmentDisplay(
+            modifier = Modifier.weight(1f),
+            decoder = BinaryFourteenSegmentDecoder(hourFirst)
+        )
+        FourteenSegmentDisplay(
+            modifier = Modifier.weight(1f),
+            decoder = BinaryFourteenSegmentDecoder(hourSecond)
+        )
+        Delimiter(modifier = Modifier.weight(0.5f), decoder = BinaryDelimiterDecoder(delimiterSignal))
+        FourteenSegmentDisplay(
+            modifier = Modifier.weight(1f),
+            decoder = BinaryFourteenSegmentDecoder(minuteFirst)
+        )
+        FourteenSegmentDisplay(
+            modifier = Modifier.weight(1f),
+            decoder = BinaryFourteenSegmentDecoder(minuteSecond)
+        )
+        Delimiter(modifier = Modifier.weight(0.5f), decoder = BinaryDelimiterDecoder(delimiterSignal))
+        FourteenSegmentDisplay(
+            modifier = Modifier.weight(1f),
+            decoder = BinaryFourteenSegmentDecoder(secondFirst)
+        )
+        FourteenSegmentDisplay(
+            modifier = Modifier.weight(1f),
+            decoder = BinaryFourteenSegmentDecoder(secondSecond)
+        )
+    }
+}
 
 private fun Boolean.toInt() = this.compareTo(false)
-
 
 @Composable
 fun FourteenSegmentDisplay(
     modifier: Modifier = Modifier,
     segmentScale: Int = 4,
     led: Led = SingleColorLed(Color.Red, Color.DarkGray.copy(alpha = 0.3f)),
-    decoder: SevenSegmentDecoder = BinarySevenSegmentDecoder()
+    decoder: FourteenSegmentDecoder = BinaryFourteenSegmentDecoder()
 ) {
     Canvas(modifier = modifier.fillMaxSize()) {
 
@@ -243,14 +282,14 @@ fun FourteenSegmentDisplay(
         drawHorizontalSegment(led.signal(decoder.d), dOffset, horizontalSegmentSize)
         drawVerticalSegment(led.signal(decoder.e), eOffset, verticalSegmentSize)
         drawVerticalSegment(led.signal(decoder.f), fOffset, verticalSegmentSize)
-        drawSmallHorizontalSegment(led.signal(decoder.g), g1Offset, smallHorizontalSegmentSize)
-        drawSmallHorizontalSegment(led.signal(decoder.g), g2Offset, smallHorizontalSegmentSize)
-        drawBackSlashSegment(led.signal(decoder.g), segmentWidth, hOffset, diagonalSegmentSize)
-        drawSmallVerticalSegment(led.signal(decoder.g), iOffset, smallVerticalSegmentSize)
-        drawForwardSlashSegment(led.signal(decoder.g), segmentWidth, jOffset, diagonalSegmentSize)
-        drawForwardSlashSegment(led.signal(decoder.g), segmentWidth, kOffset, diagonalSegmentSize)
-        drawSmallVerticalSegment(led.signal(decoder.g), lOffset, smallVerticalSegmentSize)
-        drawBackSlashSegment(led.signal(decoder.g), segmentWidth, mOffset, diagonalSegmentSize)
+        drawSmallHorizontalSegment(led.signal(decoder.g1), g1Offset, smallHorizontalSegmentSize)
+        drawSmallHorizontalSegment(led.signal(decoder.g2), g2Offset, smallHorizontalSegmentSize)
+        drawBackSlashSegment(led.signal(decoder.h), segmentWidth, hOffset, diagonalSegmentSize)
+        drawSmallVerticalSegment(led.signal(decoder.i), iOffset, smallVerticalSegmentSize)
+        drawForwardSlashSegment(led.signal(decoder.j), segmentWidth, jOffset, diagonalSegmentSize)
+        drawForwardSlashSegment(led.signal(decoder.k), segmentWidth, kOffset, diagonalSegmentSize)
+        drawSmallVerticalSegment(led.signal(decoder.l), lOffset, smallVerticalSegmentSize)
+        drawBackSlashSegment(led.signal(decoder.m), segmentWidth, mOffset, diagonalSegmentSize)
     }
 }
 

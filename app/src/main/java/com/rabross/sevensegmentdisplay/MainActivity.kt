@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
 
             Surface(color = Color.Black) {
                 Column(modifier = Modifier.padding(24.dp)) {
-                    DigitalClockDisplay(
+                    DigitalClockFourteenSegmentDisplay(
                         Modifier.weight(1f),
                         hourFirst.value,
                         hourSecond.value,
@@ -92,18 +92,18 @@ class MainActivity : ComponentActivity() {
                 .onEach { calendar ->
                     val hour = calendar.get(Calendar.HOUR_OF_DAY)
                     val hourDigits = hour.splitDigits()
-                    hourFirst.value = BinarySevenSegmentDecoder.mapToDigit(hourDigits.first)
-                    hourSecond.value = BinarySevenSegmentDecoder.mapToDigit(hourDigits.second)
+                    hourFirst.value = BinaryFourteenSegmentDecoder.mapToDigit(hourDigits.first)
+                    hourSecond.value = BinaryFourteenSegmentDecoder.mapToDigit(hourDigits.second)
 
                     val minute = calendar.get(Calendar.MINUTE)
                     val minuteDigits = minute.splitDigits()
-                    minuteFirst.value = BinarySevenSegmentDecoder.mapToDigit(minuteDigits.first)
-                    minuteSecond.value = BinarySevenSegmentDecoder.mapToDigit(minuteDigits.second)
+                    minuteFirst.value = BinaryFourteenSegmentDecoder.mapToDigit(minuteDigits.first)
+                    minuteSecond.value = BinaryFourteenSegmentDecoder.mapToDigit(minuteDigits.second)
 
                     val second = calendar.get(Calendar.SECOND)
                     val secondDigits = second.splitDigits()
-                    secondFirst.value = BinarySevenSegmentDecoder.mapToDigit(secondDigits.first)
-                    secondSecond.value = BinarySevenSegmentDecoder.mapToDigit(secondDigits.second)
+                    secondFirst.value = BinaryFourteenSegmentDecoder.mapToDigit(secondDigits.first)
+                    secondSecond.value = BinaryFourteenSegmentDecoder.mapToDigit(secondDigits.second)
                 }
                 .launchIn(lifecycleScope)
         }
