@@ -18,7 +18,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".FSTypeActivity" android:exported="true" />
+        <activity android:name=".TypingActivity" android:exported="true" />
         <activity android:name=".FourteenSegmentActivity" android:exported="true" />
     </application>
 

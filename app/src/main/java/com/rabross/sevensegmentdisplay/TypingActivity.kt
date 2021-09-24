@@ -19,7 +19,7 @@ import com.rabross.sevensegmentdisplay.fourteen.FourteenSegmentDisplay
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
-class FSTypeActivity : ComponentActivity() {
+class TypingActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,10 +28,12 @@ class FSTypeActivity : ComponentActivity() {
             var text by remember { mutableStateOf("Hello World") }
 
             Column {
-                Surface(modifier = Modifier
-                    .weight(1f), color = Color.Black) {
+                Surface(
+                    modifier = Modifier
+                        .weight(1f), color = Color.Black
+                ) {
                     Row(modifier = Modifier.padding(24.dp, 24.dp, 24.dp, 0.dp)) {
-                        if(text.isBlank()){
+                        if (text.isBlank()) {
                             Spacer(modifier = Modifier.weight(1f))
                         } else {
                             for (c in text) {
@@ -61,5 +63,4 @@ class FSTypeActivity : ComponentActivity() {
             }
         }
     }
-
 }

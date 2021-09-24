@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
+import com.rabross.sevensegmentdisplay.seven.Animations
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
@@ -55,7 +56,8 @@ class SevenSegmentActivity : ComponentActivity() {
                     Row(
                         Modifier
                             .weight(1f)
-                            .fillMaxWidth()) {
+                            .fillMaxWidth()
+                    ) {
                         SevenSegmentDisplay(
                             modifier = Modifier.weight(1f),
                             decoder = BinarySevenSegmentDecoder(animationFallFill.value),
