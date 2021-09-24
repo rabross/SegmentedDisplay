@@ -20,7 +20,7 @@ import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
-class MainActivity : ComponentActivity() {
+class SevenSegmentActivity : ComponentActivity() {
 
     private val redLed = SingleColorLed(Color.Red, Color.Black)
     private val greenLed = SingleColorLed(Color.Green, Color.Black)
@@ -52,30 +52,6 @@ class MainActivity : ComponentActivity() {
                         BinarySevenSegmentDecoder.mapToDigit(secondSecond.value),
                         3
                     )
-                    DigitalClockFourteenSegmentDisplay(
-                        Modifier.weight(1f),
-                        BinaryFourteenSegmentDecoder.mapToDigit(hourFirst.value),
-                        BinaryFourteenSegmentDecoder.mapToDigit(hourSecond.value),
-                        BinaryFourteenSegmentDecoder.mapToDigit(minuteFirst.value),
-                        BinaryFourteenSegmentDecoder.mapToDigit(minuteSecond.value),
-                        BinaryFourteenSegmentDecoder.mapToDigit(secondFirst.value),
-                        BinaryFourteenSegmentDecoder.mapToDigit(secondSecond.value),
-                        3
-                    )
-                    Row(Modifier.weight(1f)) {
-                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(BinaryFourteenSegmentDecoder.mapToDigit('H')))
-                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(BinaryFourteenSegmentDecoder.mapToDigit('E')))
-                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(BinaryFourteenSegmentDecoder.mapToDigit('L')))
-                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(BinaryFourteenSegmentDecoder.mapToDigit('L')))
-                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(BinaryFourteenSegmentDecoder.mapToDigit('O')))
-                    }
-                    Row(Modifier.weight(1f)) {
-                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(BinaryFourteenSegmentDecoder.mapToDigit('W')))
-                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(BinaryFourteenSegmentDecoder.mapToDigit('O')))
-                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(BinaryFourteenSegmentDecoder.mapToDigit('R')))
-                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(BinaryFourteenSegmentDecoder.mapToDigit('L')))
-                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(BinaryFourteenSegmentDecoder.mapToDigit('D')))
-                    }
                     Row(
                         Modifier
                             .weight(1f)
