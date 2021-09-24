@@ -7,7 +7,7 @@ android {
     compileSdk 30
 
     defaultConfig {
-        applicationId "com.rabross.sevensegmentdisplay"
+        applicationId "com.rabross.segmenteddisplay"
         minSdk 21
         targetSdk 30
         versionCode 1
@@ -49,7 +49,7 @@ android {
 
 dependencies {
 
-    implementation project(path: ':sevensegmentdisplay')
+    implementation project(path: ':segmenteddisplays')
     implementation 'androidx.core:core-ktx:1.6.0'
     implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'com.google.android.material:material:1.4.0'

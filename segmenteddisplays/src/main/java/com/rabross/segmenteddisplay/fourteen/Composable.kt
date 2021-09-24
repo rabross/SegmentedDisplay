@@ -1,4 +1,4 @@
-package com.rabross.sevensegmentdisplay.fourteen
+package com.rabross.segmenteddisplay.fourteen
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Row
@@ -12,10 +12,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.tooling.preview.Preview
-import com.rabross.sevensegmentdisplay.BinaryDelimiterDecoder
-import com.rabross.sevensegmentdisplay.Delimiter
-import com.rabross.sevensegmentdisplay.Led
-import com.rabross.sevensegmentdisplay.SingleColorLed
+import com.rabross.segmenteddisplay.BinaryDelimiterDecoder
+import com.rabross.segmenteddisplay.seven.Delimiter
+import com.rabross.segmenteddisplay.Led
+import com.rabross.segmenteddisplay.SingleColorLed
 import kotlin.math.pow
 import kotlin.math.sqrt
 

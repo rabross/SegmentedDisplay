@@ -1,4 +1,4 @@
-package com.rabross.sevensegmentdisplay.seven
+package com.rabross.segmenteddisplay.seven
 
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay

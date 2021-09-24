@@ -6,6 +6,6 @@ dependencyResolutionManagement {
         jcenter() // Warning: this repository is going to shut down soon
     }
 }
-rootProject.name = "SevenSegmentDisplay"
+rootProject.name = "SegmentDisplay"
 include ':app'
-include ':sevensegmentdisplay'
+include ':segmenteddisplays'

@@ -1,4 +1,4 @@
-package com.rabross.sevensegmentdisplay.fourteen
+package com.rabross.segmenteddisplay.fourteen
 
 interface FourteenSegmentDecoder {
     val a: Int

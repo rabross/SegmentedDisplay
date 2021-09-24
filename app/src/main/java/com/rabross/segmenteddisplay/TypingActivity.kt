@@ -1,4 +1,4 @@
-package com.rabross.sevensegmentdisplay
+package com.rabross.segmenteddisplay
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -14,8 +14,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.rabross.sevensegmentdisplay.fourteen.BinaryFourteenSegmentDecoder
-import com.rabross.sevensegmentdisplay.fourteen.FourteenSegmentDisplay
+import com.rabross.segmenteddisplay.fourteen.BinaryFourteenSegmentDecoder
+import com.rabross.segmenteddisplay.fourteen.FourteenSegmentDisplay
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime

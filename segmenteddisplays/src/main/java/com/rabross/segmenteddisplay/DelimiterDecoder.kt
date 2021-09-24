@@ -1,4 +1,4 @@
-package com.rabross.sevensegmentdisplay
+package com.rabross.segmenteddisplay
 
 interface DelimiterDecoder {
     val a: Int

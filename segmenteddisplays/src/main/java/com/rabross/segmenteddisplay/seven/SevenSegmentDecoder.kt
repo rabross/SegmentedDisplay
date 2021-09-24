@@ -1,4 +1,4 @@
-package com.rabross.sevensegmentdisplay
+package com.rabross.segmenteddisplay.seven
 
 interface SevenSegmentDecoder {
     val a: Int

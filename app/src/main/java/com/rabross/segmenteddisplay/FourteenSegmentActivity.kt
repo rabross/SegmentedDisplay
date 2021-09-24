@@ -1,4 +1,4 @@
-package com.rabross.sevensegmentdisplay
+package com.rabross.segmenteddisplay
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,9 +11,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
-import com.rabross.sevensegmentdisplay.fourteen.BinaryFourteenSegmentDecoder
-import com.rabross.sevensegmentdisplay.fourteen.DigitalClockFourteenSegmentDisplay
-import com.rabross.sevensegmentdisplay.fourteen.FourteenSegmentDisplay
+import com.rabross.segmenteddisplay.fourteen.BinaryFourteenSegmentDecoder
+import com.rabross.segmenteddisplay.fourteen.DigitalClockFourteenSegmentDisplay
+import com.rabross.segmenteddisplay.fourteen.FourteenSegmentDisplay
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
@@ -49,18 +49,38 @@ class FourteenSegmentActivity : ComponentActivity() {
                         3
                     )
                     Row(Modifier.weight(1f)) {
-                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(BinaryFourteenSegmentDecoder.mapToDisplay('H')))
-                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(BinaryFourteenSegmentDecoder.mapToDisplay('E')))
-                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(BinaryFourteenSegmentDecoder.mapToDisplay('L')))
-                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(BinaryFourteenSegmentDecoder.mapToDisplay('L')))
-                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(BinaryFourteenSegmentDecoder.mapToDisplay('O')))
+                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(
+                            BinaryFourteenSegmentDecoder.mapToDisplay('H'))
+                        )
+                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(
+                            BinaryFourteenSegmentDecoder.mapToDisplay('E'))
+                        )
+                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(
+                            BinaryFourteenSegmentDecoder.mapToDisplay('L'))
+                        )
+                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(
+                            BinaryFourteenSegmentDecoder.mapToDisplay('L'))
+                        )
+                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(
+                            BinaryFourteenSegmentDecoder.mapToDisplay('O'))
+                        )
                     }
                     Row(Modifier.weight(1f)) {
-                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(BinaryFourteenSegmentDecoder.mapToDisplay('W')))
-                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(BinaryFourteenSegmentDecoder.mapToDisplay('O')))
-                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(BinaryFourteenSegmentDecoder.mapToDisplay('R')))
-                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(BinaryFourteenSegmentDecoder.mapToDisplay('L')))
-                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(BinaryFourteenSegmentDecoder.mapToDisplay('D')))
+                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(
+                            BinaryFourteenSegmentDecoder.mapToDisplay('W'))
+                        )
+                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(
+                            BinaryFourteenSegmentDecoder.mapToDisplay('O'))
+                        )
+                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(
+                            BinaryFourteenSegmentDecoder.mapToDisplay('R'))
+                        )
+                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(
+                            BinaryFourteenSegmentDecoder.mapToDisplay('L'))
+                        )
+                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(
+                            BinaryFourteenSegmentDecoder.mapToDisplay('D'))
+                        )
                     }
                 }
             }

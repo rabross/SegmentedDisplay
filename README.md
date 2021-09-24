@@ -1,9 +1,9 @@
-[![](https://jitpack.io/v/rabross/SevenSegmentDisplay.svg)](https://jitpack.io/#rabross/SevenSegmentDisplay)
+[![](https://jitpack.io/v/rabross/SegmentedDisplay.svg)](https://jitpack.io/#rabross/SegmentedDisplay)
 
-# SevenSegmentDisplay
-A 7-segment display for Android build with Jetpack Compose
+# SegmentedDisplay
+A 7-segment and 14-segment display for Android build with Jetpack Compose
 
-<img alt="Screenshot 2021-09-19 at 20 47 25" src="https://user-images.githubusercontent.com/3681815/133940972-bdf921c4-7567-4bd6-b5b9-e8a5d1d3ba74.png">
+<img src="https://user-images.githubusercontent.com/3681815/133940972-bdf921c4-7567-4bd6-b5b9-e8a5d1d3ba74.png">
 
 ## Customizable
 Highly customisable.
@@ -14,7 +14,7 @@ Hook up to a data stream to create animations.
 
 ## Dependency
 
-    implementation 'com.github.rabross:SevenSegmentDisplay:v0.1.0'
+    implementation 'com.github.rabross:SegmentedDisplay:v0.1.0'
 
 Add the JitPack repository to your root `build.gradle` file
 

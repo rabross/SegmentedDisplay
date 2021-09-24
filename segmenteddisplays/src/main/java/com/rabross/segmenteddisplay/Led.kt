@@ -1,4 +1,4 @@
-package com.rabross.sevensegmentdisplay
+package com.rabross.segmenteddisplay
 
 import androidx.compose.ui.graphics.Color
 
