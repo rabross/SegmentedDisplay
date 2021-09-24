@@ -77,7 +77,7 @@ fun FourteenSegmentDisplay(
     led: Led = SingleColorLed(Color.Red, Color.DarkGray.copy(alpha = 0.4f)),
     decoder: FourteenSegmentDecoder = BinaryFourteenSegmentDecoder()
 ) {
-    Canvas(modifier = modifier.fillMaxSize().padding(4.dp)) {
+    Canvas(modifier = modifier.fillMaxSize()) {
 
         val scaleWidth = 1 + segmentScale + 1
         val scaleHeight = 1 + segmentScale + 1 + segmentScale + 1
@@ -88,26 +88,29 @@ fun FourteenSegmentDisplay(
         val segmentWidth = if (scaleHeight * segmentWidthByWidth < size.height) segmentWidthByWidth else segmentWidthByHeight
         val segmentLength = segmentScale * segmentWidth
 
+        val fullWidth = segmentWidth * scaleWidth
+        val quarterGapWidth = (fullWidth - segmentWidth * 3)/2
+
         val horizontalSegmentSize = Size(segmentLength, segmentWidth)
         val smallHorizontalSegmentSize = Size(segmentLength / 2, segmentWidth)
         val verticalSegmentSize = Size(segmentWidth, segmentLength)
         val smallVerticalSegmentSize = Size(segmentWidth, segmentLength - segmentWidth/2)
-        val diagonalSegmentSize = Size(segmentWidth * 1.5f, segmentLength)
+        val diagonalSegmentSize = Size(quarterGapWidth, segmentLength)
 
         val aOffset = Offset(segmentWidth, 0f)
         val bOffset = Offset(segmentLength + segmentWidth, segmentWidth)
-        val cOffset = Offset(segmentLength + segmentWidth, segmentLength + segmentWidth + segmentWidth)
+        val cOffset = Offset(segmentLength + segmentWidth, segmentLength + segmentWidth * 2)
         val dOffset = Offset(segmentWidth, segmentLength + segmentWidth + segmentLength + segmentWidth)
-        val eOffset = Offset(0f, segmentLength + segmentWidth + segmentWidth)
+        val eOffset = Offset(0f, segmentLength + segmentWidth * 2)
         val fOffset = Offset(0f, segmentWidth)
         val g1Offset = Offset(segmentWidth, segmentLength + segmentWidth)
-        val g2Offset = Offset(segmentLength - segmentWidth + segmentWidth / 2, segmentLength + segmentWidth)
+        val g2Offset = Offset(quarterGapWidth + segmentWidth * 2, segmentLength + segmentWidth)
         val hOffset = Offset(segmentWidth, segmentWidth)
-        val iOffset = Offset(segmentWidth*2 + segmentWidth / 2, segmentWidth + segmentWidth/2)
-        val jOffset = Offset(segmentLength - segmentWidth/2, segmentWidth)
+        val iOffset = Offset(quarterGapWidth + segmentWidth, segmentWidth + segmentWidth / 2)
+        val jOffset = Offset(quarterGapWidth + segmentWidth * 2, segmentWidth)
         val kOffset = Offset(segmentWidth, segmentLength + segmentWidth * 2)
-        val lOffset = Offset(segmentWidth*2 + segmentWidth / 2, segmentLength + segmentWidth + segmentWidth)
-        val mOffset = Offset(segmentLength - segmentWidth/2, segmentLength + segmentWidth + segmentWidth)
+        val lOffset = Offset(quarterGapWidth + segmentWidth, segmentLength + segmentWidth * 2)
+        val mOffset = Offset(quarterGapWidth + segmentWidth * 2, segmentLength + segmentWidth * 2)
 
         drawHorizontalSegment(led.signal(decoder.a), aOffset, horizontalSegmentSize)
         drawVerticalSegment(led.signal(decoder.b), bOffset, verticalSegmentSize)
