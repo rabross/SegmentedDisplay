@@ -42,17 +42,44 @@ class MainActivity : ComponentActivity() {
 
             Surface(color = Color.Black) {
                 Column(modifier = Modifier.padding(24.dp)) {
-                    DigitalClockFourteenSegmentDisplay(
+                    DigitalClockSevenSegmentDisplay(
                         Modifier.weight(1f),
-                        hourFirst.value,
-                        hourSecond.value,
-                        minuteFirst.value,
-                        minuteSecond.value,
-                        secondFirst.value,
-                        secondSecond.value,
+                        BinarySevenSegmentDecoder.mapToDigit(hourFirst.value),
+                        BinarySevenSegmentDecoder.mapToDigit(hourSecond.value),
+                        BinarySevenSegmentDecoder.mapToDigit(minuteFirst.value),
+                        BinarySevenSegmentDecoder.mapToDigit(minuteSecond.value),
+                        BinarySevenSegmentDecoder.mapToDigit(secondFirst.value),
+                        BinarySevenSegmentDecoder.mapToDigit(secondSecond.value),
                         3
                     )
-                    Row(Modifier.weight(1f).fillMaxWidth()) {
+                    DigitalClockFourteenSegmentDisplay(
+                        Modifier.weight(1f),
+                        BinaryFourteenSegmentDecoder.mapToDigit(hourFirst.value),
+                        BinaryFourteenSegmentDecoder.mapToDigit(hourSecond.value),
+                        BinaryFourteenSegmentDecoder.mapToDigit(minuteFirst.value),
+                        BinaryFourteenSegmentDecoder.mapToDigit(minuteSecond.value),
+                        BinaryFourteenSegmentDecoder.mapToDigit(secondFirst.value),
+                        BinaryFourteenSegmentDecoder.mapToDigit(secondSecond.value),
+                        3
+                    )
+                    Row(Modifier.weight(1f)) {
+                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(BinaryFourteenSegmentDecoder.mapToDigit('H')))
+                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(BinaryFourteenSegmentDecoder.mapToDigit('E')))
+                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(BinaryFourteenSegmentDecoder.mapToDigit('L')))
+                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(BinaryFourteenSegmentDecoder.mapToDigit('L')))
+                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(BinaryFourteenSegmentDecoder.mapToDigit('O')))
+                    }
+                    Row(Modifier.weight(1f)) {
+                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(BinaryFourteenSegmentDecoder.mapToDigit('W')))
+                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(BinaryFourteenSegmentDecoder.mapToDigit('O')))
+                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(BinaryFourteenSegmentDecoder.mapToDigit('R')))
+                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(BinaryFourteenSegmentDecoder.mapToDigit('L')))
+                        FourteenSegmentDisplay(modifier = Modifier.weight(1f), decoder = BinaryFourteenSegmentDecoder(BinaryFourteenSegmentDecoder.mapToDigit('D')))
+                    }
+                    Row(
+                        Modifier
+                            .weight(1f)
+                            .fillMaxWidth()) {
                         SevenSegmentDisplay(
                             modifier = Modifier.weight(1f),
                             decoder = BinarySevenSegmentDecoder(animationFallFill.value),
@@ -92,18 +119,18 @@ class MainActivity : ComponentActivity() {
                 .onEach { calendar ->
                     val hour = calendar.get(Calendar.HOUR_OF_DAY)
                     val hourDigits = hour.splitDigits()
-                    hourFirst.value = BinaryFourteenSegmentDecoder.mapToDigit(hourDigits.first)
-                    hourSecond.value = BinaryFourteenSegmentDecoder.mapToDigit(hourDigits.second)
+                    hourFirst.value = hourDigits.first
+                    hourSecond.value = hourDigits.second
 
                     val minute = calendar.get(Calendar.MINUTE)
                     val minuteDigits = minute.splitDigits()
-                    minuteFirst.value = BinaryFourteenSegmentDecoder.mapToDigit(minuteDigits.first)
-                    minuteSecond.value = BinaryFourteenSegmentDecoder.mapToDigit(minuteDigits.second)
+                    minuteFirst.value = minuteDigits.first
+                    minuteSecond.value = minuteDigits.second
 
                     val second = calendar.get(Calendar.SECOND)
                     val secondDigits = second.splitDigits()
-                    secondFirst.value = BinaryFourteenSegmentDecoder.mapToDigit(secondDigits.first)
-                    secondSecond.value = BinaryFourteenSegmentDecoder.mapToDigit(secondDigits.second)
+                    secondFirst.value = secondDigits.first
+                    secondSecond.value = secondDigits.second
                 }
                 .launchIn(lifecycleScope)
         }

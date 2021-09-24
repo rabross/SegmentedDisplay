@@ -36,7 +36,7 @@ fun DigitalClockDisplayPreview() {
 @Composable
 fun FourteenSegmentDisplayPreview() {
     Surface(Modifier.fillMaxSize()) {
-        FourteenSegmentDisplay(decoder = BinaryFourteenSegmentDecoder(0b10000000))
+        FourteenSegmentDisplay()
     }
 }
 
@@ -268,12 +268,12 @@ fun FourteenSegmentDisplay(
         val eOffset = Offset(0f, segmentLength + segmentWidth + segmentWidth)
         val fOffset = Offset(0f, segmentWidth)
         val g1Offset = Offset(segmentWidth, segmentLength + segmentWidth)
-        val g2Offset = Offset(center.x + segmentWidth/2, segmentLength + segmentWidth)
+        val g2Offset = Offset(segmentLength - segmentWidth + segmentWidth / 2, segmentLength + segmentWidth)
         val hOffset = Offset(segmentWidth, segmentWidth)
-        val iOffset = Offset(center.x - segmentWidth/2, segmentWidth + segmentWidth/2)
+        val iOffset = Offset(segmentWidth*2 + segmentWidth / 2, segmentWidth + segmentWidth/2)
         val jOffset = Offset(segmentLength - segmentWidth/2, segmentWidth)
         val kOffset = Offset(segmentWidth, segmentLength + segmentWidth * 2)
-        val lOffset = Offset(center.x - segmentWidth/2, segmentLength + segmentWidth + segmentWidth)
+        val lOffset = Offset(segmentWidth*2 + segmentWidth / 2, segmentLength + segmentWidth + segmentWidth)
         val mOffset = Offset(segmentLength - segmentWidth/2, segmentLength + segmentWidth + segmentWidth)
 
         drawHorizontalSegment(led.signal(decoder.a), aOffset, horizontalSegmentSize)
