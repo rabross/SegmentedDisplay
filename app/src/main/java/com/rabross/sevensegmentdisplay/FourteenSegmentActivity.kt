@@ -11,6 +11,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
+import com.rabross.sevensegmentdisplay.fourteen.BinaryFourteenSegmentDecoder
+import com.rabross.sevensegmentdisplay.fourteen.DigitalClockFourteenSegmentDisplay
+import com.rabross.sevensegmentdisplay.fourteen.FourteenSegmentDisplay
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*

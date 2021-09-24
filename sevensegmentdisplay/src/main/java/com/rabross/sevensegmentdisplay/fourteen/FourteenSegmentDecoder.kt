@@ -1,4 +1,4 @@
-package com.rabross.sevensegmentdisplay
+package com.rabross.sevensegmentdisplay.fourteen
 
 interface FourteenSegmentDecoder {
     val a: Int
@@ -77,6 +77,16 @@ class BinaryFourteenSegmentDecoder(data: Int = 0) : FourteenSegmentDecoder {
                 'X' -> 0x2D00
                 'Y' -> 0x1500
                 'Z' -> 0xC09
+                '0' -> mapToDigit(0)
+                '1' -> mapToDigit(1)
+                '2' -> mapToDigit(2)
+                '3' -> mapToDigit(3)
+                '4' -> mapToDigit(4)
+                '5' -> mapToDigit(5)
+                '6' -> mapToDigit(6)
+                '7' -> mapToDigit(7)
+                '8' -> mapToDigit(8)
+                '9' -> mapToDigit(9)
                 else -> 0x0
             }
         }
