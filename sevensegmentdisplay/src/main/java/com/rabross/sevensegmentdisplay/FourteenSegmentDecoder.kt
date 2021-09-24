@@ -49,5 +49,36 @@ class BinaryFourteenSegmentDecoder(data: Int = 0) : FourteenSegmentDecoder {
                 else -> 0x0
             }
         }
+        fun mapToDigit(char: Char): Int {
+            return when (char) {
+                'A' -> 0xF7
+                'B' -> 0x128F
+                'C' -> 0x39
+                'D' -> 0x120F
+                'E' -> 0xF9
+                'F' -> 0xF1
+                'G' -> 0xBD
+                'H' -> 0xF6
+                'I' -> 0x1209
+                'J' -> 0x1E
+                'K' -> 0x2470
+                'L' -> 0x38
+                'M' -> 0x536
+                'N' -> 0x2136
+                'O' -> 0x3F
+                'P' -> 0xF3
+                'Q' -> 0x203F
+                'R' -> 0x20F3
+                'S' -> 0x18D
+                'T' -> 0x1201
+                'U' -> 0x3E
+                'V' -> 0xC30
+                'W' -> 0x2836
+                'X' -> 0x2D00
+                'Y' -> 0x1500
+                'Z' -> 0xC09
+                else -> 0x0
+            }
+        }
     }
 }
