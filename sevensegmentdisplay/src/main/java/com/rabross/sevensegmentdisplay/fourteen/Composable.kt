@@ -3,7 +3,6 @@ package com.rabross.sevensegmentdisplay.fourteen
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -13,7 +12,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.rabross.sevensegmentdisplay.BinaryDelimiterDecoder
 import com.rabross.sevensegmentdisplay.Delimiter
 import com.rabross.sevensegmentdisplay.Led
@@ -112,112 +110,134 @@ fun FourteenSegmentDisplay(
         val lOffset = Offset(quarterGapWidth + segmentWidth, segmentLength + segmentWidth * 2)
         val mOffset = Offset(quarterGapWidth + segmentWidth * 2, segmentLength + segmentWidth * 2)
 
-        drawHorizontalSegment(led.signal(decoder.a), aOffset, horizontalSegmentSize)
-        drawVerticalSegment(led.signal(decoder.b), bOffset, verticalSegmentSize)
-        drawVerticalSegment(led.signal(decoder.c), cOffset, verticalSegmentSize)
-        drawHorizontalSegment(led.signal(decoder.d), dOffset, horizontalSegmentSize)
-        drawVerticalSegment(led.signal(decoder.e), eOffset, verticalSegmentSize)
-        drawVerticalSegment(led.signal(decoder.f), fOffset, verticalSegmentSize)
-        drawSmallHorizontalSegment(led.signal(decoder.g1), g1Offset, smallHorizontalSegmentSize)
-        drawSmallHorizontalSegment(led.signal(decoder.g2), g2Offset, smallHorizontalSegmentSize)
-        drawBackSlashSegment(led.signal(decoder.h), segmentWidth, hOffset, diagonalSegmentSize)
-        drawSmallVerticalSegment(led.signal(decoder.i), iOffset, smallVerticalSegmentSize)
-        drawForwardSlashSegment(led.signal(decoder.j), segmentWidth, jOffset, diagonalSegmentSize)
-        drawForwardSlashSegment(led.signal(decoder.k), segmentWidth, kOffset, diagonalSegmentSize)
-        drawSmallVerticalSegment(led.signal(decoder.l), lOffset, smallVerticalSegmentSize)
-        drawBackSlashSegment(led.signal(decoder.m), segmentWidth, mOffset, diagonalSegmentSize)
+        drawSegmentA(led.signal(decoder.a), aOffset, horizontalSegmentSize)
+        drawSegmentB(led.signal(decoder.b), bOffset, verticalSegmentSize)
+        drawSegmentC(led.signal(decoder.c), cOffset, verticalSegmentSize)
+        drawSegmentD(led.signal(decoder.d), dOffset, horizontalSegmentSize)
+        drawSegmentE(led.signal(decoder.e), eOffset, verticalSegmentSize)
+        drawSegmentF(led.signal(decoder.f), fOffset, verticalSegmentSize)
+        drawSegmentG1(led.signal(decoder.g1), g1Offset, smallHorizontalSegmentSize)
+        drawSegmentG2(led.signal(decoder.g2), g2Offset, smallHorizontalSegmentSize)
+        drawSegmentH(led.signal(decoder.h), segmentWidth, hOffset, diagonalSegmentSize)
+        drawSegmentI(led.signal(decoder.i), iOffset, smallVerticalSegmentSize)
+        drawSegmentJ(led.signal(decoder.j), segmentWidth, jOffset, diagonalSegmentSize)
+        drawSegmentK(led.signal(decoder.k), segmentWidth, kOffset, diagonalSegmentSize)
+        drawSegmentL(led.signal(decoder.l), lOffset, smallVerticalSegmentSize)
+        drawSegmentM(led.signal(decoder.m), segmentWidth, mOffset, diagonalSegmentSize)
     }
 }
 
+private fun DrawScope.drawSegmentA(c: Color, o: Offset, s: Size) = drawHorizontalSegment(c, o, s)
+private fun DrawScope.drawSegmentB(c: Color, o: Offset, s: Size) = drawVerticalSegment(c, o, s)
+private fun DrawScope.drawSegmentC(c: Color, o: Offset, s: Size) = drawVerticalSegment(c, o, s)
+private fun DrawScope.drawSegmentD(c: Color, o: Offset, s: Size) = drawHorizontalSegment(c, o, s)
+private fun DrawScope.drawSegmentE(c: Color, o: Offset, s: Size) = drawVerticalSegment(c, o, s)
+private fun DrawScope.drawSegmentF(c: Color, o: Offset, s: Size) = drawVerticalSegment(c, o, s)
+private fun DrawScope.drawSegmentG1(c: Color, o: Offset, s: Size) = drawSmallHorizontalSegment(c, o, s)
+private fun DrawScope.drawSegmentG2(c: Color, o: Offset, s: Size) = drawSmallHorizontalSegment(c, o, s)
+private fun DrawScope.drawSegmentH(c: Color, w: Float, o: Offset, s: Size) = drawBackSlashSegment(c, w, o, s)
+private fun DrawScope.drawSegmentI(c: Color, o: Offset, s: Size) = drawSmallVerticalSegment(c, o, s)
+private fun DrawScope.drawSegmentJ(c: Color, w: Float, o: Offset, s: Size) = drawForwardSlashSegment(c, w, o, s)
+private fun DrawScope.drawSegmentK(c: Color, w: Float, o: Offset, s: Size) = drawForwardSlashSegment(c, w, o, s)
+private fun DrawScope.drawSegmentL(c: Color, o: Offset, s: Size) = drawSmallVerticalSegment(c, o, s)
+private fun DrawScope.drawSegmentM(c: Color, w: Float, o: Offset, s: Size) = drawBackSlashSegment(c, w, o, s)
+
 private fun DrawScope.drawHorizontalSegment(color: Color, offset: Offset, size: Size) {
     val radius = size.minDimension / 2
-    val centerX: Float = offset.x + size.width / 2
-    val centerY: Float = offset.y + size.height / 2
+    val centerX = offset.x + size.width / 2
+    val centerY = offset.y + size.height / 2
     val spacing = radius / 10
-    val hexagonPath = Path()
-    hexagonPath.moveTo(centerX, centerY + radius - spacing)
-    hexagonPath.lineTo(centerX - size.width/2, centerY + radius - spacing)
-    hexagonPath.lineTo(centerX - size.width/2 - radius + spacing, centerY)
-    hexagonPath.lineTo(centerX - size.width/2, centerY - radius + spacing)
-    hexagonPath.lineTo(centerX + size.width/2, centerY - radius + spacing)
-    hexagonPath.lineTo(centerX + size.width/2 + radius - spacing, centerY)
-    hexagonPath.lineTo(centerX + size.width/2, centerY + radius - spacing)
-    hexagonPath.moveTo(centerX, centerY + radius - spacing)
+
+    val hexagonPath = Path().apply {
+        moveTo(centerX - size.width/2, centerY + radius - spacing)
+        lineTo(centerX - size.width/2 - radius + spacing, centerY)
+        lineTo(centerX - size.width/2, centerY - radius + spacing)
+        lineTo(centerX + size.width/2, centerY - radius + spacing)
+        lineTo(centerX + size.width/2 + radius - spacing, centerY)
+        lineTo(centerX + size.width/2, centerY + radius - spacing)
+    }
+
     drawPath(hexagonPath, color)
 }
 
 private fun DrawScope.drawVerticalSegment(color: Color, offset: Offset, size: Size) {
     val radius = size.minDimension / 2
-    val centerX: Float = offset.x + size.width / 2
-    val centerY: Float = offset.y + size.height / 2
+    val centerX = offset.x + size.width / 2
+    val centerY = offset.y + size.height / 2
     val spacing = radius / 10
-    val hexagonPath = Path()
-    hexagonPath.moveTo(centerX, centerY + radius + size.height/2 - spacing)
-    hexagonPath.lineTo(centerX - radius + spacing, centerY + size.height/2)
-    hexagonPath.lineTo(centerX - radius + spacing, centerY - size.height/2)
-    hexagonPath.lineTo(centerX, centerY - radius - size.height/2 + spacing)
-    hexagonPath.lineTo(centerX + radius - spacing, centerY - size.height/2)
-    hexagonPath.lineTo(centerX + radius - spacing, centerY + size.height/2)
-    hexagonPath.moveTo(centerX, centerY + radius + size.height/2 - spacing)
+
+    val hexagonPath = Path().apply {
+        moveTo(centerX, centerY + radius + size.height / 2 - spacing)
+        lineTo(centerX - radius + spacing, centerY + size.height / 2)
+        lineTo(centerX - radius + spacing, centerY - size.height / 2)
+        lineTo(centerX, centerY - radius - size.height / 2 + spacing)
+        lineTo(centerX + radius - spacing, centerY - size.height / 2)
+        lineTo(centerX + radius - spacing, centerY + size.height / 2)
+    }
+
     drawPath(hexagonPath, color)
 }
 
 private fun DrawScope.drawSmallHorizontalSegment(color: Color, offset: Offset, size: Size) {
     val radius = size.minDimension / 2
-    val centerX: Float = offset.x + size.width / 2
-    val centerY: Float = offset.y + size.height / 2
+    val centerX = offset.x + size.width / 2
+    val centerY = offset.y + size.height / 2
     val spacing = radius / 10
-    val hexagonPath = Path()
-    hexagonPath.moveTo(centerX, centerY + radius - spacing)
-    hexagonPath.lineTo(centerX - size.width/2, centerY + radius - spacing)
-    hexagonPath.lineTo(centerX - size.width/2 - radius + spacing, centerY)
-    hexagonPath.lineTo(centerX - size.width/2, centerY - radius + spacing)
-    hexagonPath.lineTo(centerX + size.width/2 - radius, centerY - radius + spacing)
-    hexagonPath.lineTo(centerX + size.width/2 - spacing, centerY)
-    hexagonPath.lineTo(centerX + size.width/2 - radius, centerY + radius - spacing)
-    hexagonPath.moveTo(centerX, centerY + radius - spacing)
+
+    val hexagonPath = Path().apply {
+        moveTo(centerX - size.width / 2, centerY + radius - spacing)
+        lineTo(centerX - size.width / 2 - radius + spacing, centerY)
+        lineTo(centerX - size.width / 2, centerY - radius + spacing)
+        lineTo(centerX + size.width / 2 - radius, centerY - radius + spacing)
+        lineTo(centerX + size.width / 2 - spacing, centerY)
+        lineTo(centerX + size.width / 2 - radius, centerY + radius - spacing)
+    }
+
     drawPath(hexagonPath, color)
 }
 
 private fun DrawScope.drawSmallVerticalSegment(color: Color, offset: Offset, size: Size) {
     val radius = size.minDimension / 2
-    val centerX: Float = offset.x + size.width / 2
-    val centerY: Float = offset.y + size.height / 2
+    val centerX = offset.x + size.width / 2
+    val centerY = offset.y + size.height / 2
     val spacing = radius / 10
-    val hexagonPath = Path()
-    hexagonPath.moveTo(centerX, centerY + radius + size.height/2 - spacing)
-    hexagonPath.lineTo(centerX - radius + spacing, centerY + size.height/2)
-    hexagonPath.lineTo(centerX - radius + spacing, centerY - size.height/2)
-    hexagonPath.lineTo(centerX, centerY - radius - size.height/2 + spacing)
-    hexagonPath.lineTo(centerX + radius - spacing, centerY - size.height/2)
-    hexagonPath.lineTo(centerX + radius - spacing, centerY + size.height/2)
-    hexagonPath.moveTo(centerX, centerY + radius + size.height/2 - spacing)
+
+    val hexagonPath = Path().apply {
+        moveTo(centerX, centerY + radius + size.height / 2 - spacing)
+        lineTo(centerX - radius + spacing, centerY + size.height / 2)
+        lineTo(centerX - radius + spacing, centerY - size.height / 2)
+        lineTo(centerX, centerY - radius - size.height / 2 + spacing)
+        lineTo(centerX + radius - spacing, centerY - size.height / 2)
+        lineTo(centerX + radius - spacing, centerY + size.height / 2)
+    }
+
     drawPath(hexagonPath, color)
 }
 
 private fun DrawScope.drawBackSlashSegment(color: Color, width: Float, offset: Offset, size: Size) {
-    val calcWidth = sqrt(width.pow(2)/2) * 2
-    val spacing = calcWidth / 40
+    val diagonalWidth = sqrt(width.pow(2)/2) * 2
+    val spacing = diagonalWidth / 40
 
-    val parallelogram = Path()
-    parallelogram.moveTo(offset.x + spacing, offset.y + spacing)
-    parallelogram.lineTo(offset.x + size.width - spacing, offset.y + size.height - calcWidth)
-    parallelogram.lineTo(offset.x + size.width - spacing, offset.y + size.height - spacing)
-    parallelogram.lineTo(offset.x + spacing, offset.y + calcWidth)
-    parallelogram.lineTo(offset.x + spacing, offset.y + spacing)
+    val parallelogram = Path().apply {
+        moveTo(offset.x + spacing, offset.y + spacing)
+        lineTo(offset.x + size.width - spacing, offset.y + size.height - diagonalWidth)
+        lineTo(offset.x + size.width - spacing, offset.y + size.height - spacing)
+        lineTo(offset.x + spacing, offset.y + diagonalWidth)
+    }
 
     drawPath(parallelogram, color)
 }
 
 private fun DrawScope.drawForwardSlashSegment(color: Color, width: Float, offset: Offset, size: Size) {
-    val calcWidth = sqrt(width.pow(2)/2) * 2
-    val spacing = calcWidth / 40
+    val diagonalWidth = sqrt(width.pow(2)/2) * 2
+    val spacing = diagonalWidth / 40
 
-    val parallelogram = Path()
-    parallelogram.moveTo(offset.x + spacing, offset.y + size.height - spacing)
-    parallelogram.lineTo(offset.x + spacing, offset.y + size.height - calcWidth)
-    parallelogram.lineTo(offset.x + size.width - spacing, offset.y + spacing)
-    parallelogram.lineTo(offset.x + size.width - spacing, offset.y + calcWidth)
-    parallelogram.lineTo(offset.x + spacing, offset.y + size.height - spacing)
+    val parallelogram = Path().apply {
+        moveTo(offset.x + spacing, offset.y + size.height - spacing)
+        lineTo(offset.x + spacing, offset.y + size.height - diagonalWidth)
+        lineTo(offset.x + size.width - spacing, offset.y + spacing)
+        lineTo(offset.x + size.width - spacing, offset.y + diagonalWidth)
+    }
+
     drawPath(parallelogram, color)
 }

@@ -31,14 +31,14 @@ class FSTypeActivity : ComponentActivity() {
                 Surface(modifier = Modifier
                     .weight(1f), color = Color.Black) {
                     Row(modifier = Modifier.padding(24.dp, 24.dp, 24.dp, 0.dp)) {
-                        if(text.isNullOrBlank()){
+                        if(text.isBlank()){
                             Spacer(modifier = Modifier.weight(1f))
                         } else {
                             for (c in text) {
                                 FourteenSegmentDisplay(
                                     modifier = Modifier.weight(1f),
                                     decoder = BinaryFourteenSegmentDecoder(
-                                        BinaryFourteenSegmentDecoder.mapToDigit(c.uppercaseChar())
+                                        BinaryFourteenSegmentDecoder.mapToDisplay(c.uppercaseChar())
                                     )
                                 )
                             }

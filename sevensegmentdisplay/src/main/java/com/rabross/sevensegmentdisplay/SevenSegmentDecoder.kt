@@ -20,7 +20,7 @@ class BinarySevenSegmentDecoder(data: Int = 0) : SevenSegmentDecoder {
     override val g = data and 0b01000000
 
     companion object {
-        fun mapToDigit(number: Int): Int {
+        fun mapToDisplay(number: Int): Int {
             return when (number) {
                 0 -> 0b00111111
                 1 -> 0b00000110

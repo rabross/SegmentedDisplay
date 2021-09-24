@@ -44,12 +44,12 @@ class SevenSegmentActivity : ComponentActivity() {
                 Column(modifier = Modifier.padding(24.dp)) {
                     DigitalClockSevenSegmentDisplay(
                         Modifier.weight(1f),
-                        BinarySevenSegmentDecoder.mapToDigit(hourFirst.value),
-                        BinarySevenSegmentDecoder.mapToDigit(hourSecond.value),
-                        BinarySevenSegmentDecoder.mapToDigit(minuteFirst.value),
-                        BinarySevenSegmentDecoder.mapToDigit(minuteSecond.value),
-                        BinarySevenSegmentDecoder.mapToDigit(secondFirst.value),
-                        BinarySevenSegmentDecoder.mapToDigit(secondSecond.value),
+                        BinarySevenSegmentDecoder.mapToDisplay(hourFirst.value),
+                        BinarySevenSegmentDecoder.mapToDisplay(hourSecond.value),
+                        BinarySevenSegmentDecoder.mapToDisplay(minuteFirst.value),
+                        BinarySevenSegmentDecoder.mapToDisplay(minuteSecond.value),
+                        BinarySevenSegmentDecoder.mapToDisplay(secondFirst.value),
+                        BinarySevenSegmentDecoder.mapToDisplay(secondSecond.value),
                         3
                     )
                     Row(

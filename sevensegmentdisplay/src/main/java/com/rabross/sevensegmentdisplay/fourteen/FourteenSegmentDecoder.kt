@@ -34,7 +34,7 @@ class BinaryFourteenSegmentDecoder(data: Int = 0) : FourteenSegmentDecoder {
     override val m  = data and 0b0010000000000000
 
     companion object {
-        fun mapToDigit(number: Int): Int {
+        fun mapToDisplay(number: Int): Int {
             return when (number) {
                 0 -> 0xC3F
                 1 -> 0x406
@@ -49,7 +49,7 @@ class BinaryFourteenSegmentDecoder(data: Int = 0) : FourteenSegmentDecoder {
                 else -> 0x0
             }
         }
-        fun mapToDigit(char: Char): Int {
+        fun mapToDisplay(char: Char): Int {
             return when (char) {
                 'A' -> 0xF7
                 'B' -> 0x128F
@@ -77,16 +77,16 @@ class BinaryFourteenSegmentDecoder(data: Int = 0) : FourteenSegmentDecoder {
                 'X' -> 0x2D00
                 'Y' -> 0x1500
                 'Z' -> 0xC09
-                '0' -> mapToDigit(0)
-                '1' -> mapToDigit(1)
-                '2' -> mapToDigit(2)
-                '3' -> mapToDigit(3)
-                '4' -> mapToDigit(4)
-                '5' -> mapToDigit(5)
-                '6' -> mapToDigit(6)
-                '7' -> mapToDigit(7)
-                '8' -> mapToDigit(8)
-                '9' -> mapToDigit(9)
+                '0' -> mapToDisplay(0)
+                '1' -> mapToDisplay(1)
+                '2' -> mapToDisplay(2)
+                '3' -> mapToDisplay(3)
+                '4' -> mapToDisplay(4)
+                '5' -> mapToDisplay(5)
+                '6' -> mapToDisplay(6)
+                '7' -> mapToDisplay(7)
+                '8' -> mapToDisplay(8)
+                '9' -> mapToDisplay(9)
                 else -> 0x0
             }
         }
