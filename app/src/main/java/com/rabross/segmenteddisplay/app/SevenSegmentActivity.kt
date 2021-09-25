@@ -1,4 +1,4 @@
-package com.rabross.segmenteddisplay
+package com.rabross.segmenteddisplay.app
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
+import com.rabross.segmenteddisplay.SingleColorLed
 import com.rabross.segmenteddisplay.seven.Animations
 import com.rabross.segmenteddisplay.seven.BinarySevenSegmentDecoder
 import com.rabross.segmenteddisplay.seven.DigitalClockSevenSegmentDisplay

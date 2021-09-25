@@ -1,4 +1,4 @@
-package com.rabross.segmenteddisplay
+package com.rabross.segmenteddisplay.app
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
