@@ -4,6 +4,7 @@
 A 7-segment and 14-segment display for Android build with Jetpack Compose
 
 <img src="https://user-images.githubusercontent.com/3681815/133940972-bdf921c4-7567-4bd6-b5b9-e8a5d1d3ba74.png">
+<img src="https://user-images.githubusercontent.com/3681815/134777713-e61c2a27-1346-4591-9e34-2b76058607c4.png">
 
 ## Customizable
 Highly customisable.
@@ -14,7 +15,7 @@ Hook up to a data stream to create animations.
 
 ## Dependency
 
-    implementation 'com.github.rabross:SegmentedDisplay:v0.1.0'
+    implementation 'com.github.rabross:SegmentedDisplay:v0.3.0'
 
 Add the JitPack repository to your root `build.gradle` file
 
