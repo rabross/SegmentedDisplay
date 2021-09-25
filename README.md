@@ -1,4 +1,5 @@
 [![](https://jitpack.io/v/rabross/SegmentedDisplay.svg)](https://jitpack.io/#rabross/SegmentedDisplay)
+![GitHub](https://img.shields.io/github/license/rabross/SegmentedDisplay.svg)
 
 # SegmentedDisplay
 A 7-segment and 14-segment display for Android build with Jetpack Compose
