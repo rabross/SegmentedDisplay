@@ -1,4 +1,4 @@
 jdk:
   - openjdk11
 install:
-  - ./gradlew build :segmenteddisplays:publishToMavenLocal
+  - ./gradlew build :segmenteddisplay:publishToMavenLocal
