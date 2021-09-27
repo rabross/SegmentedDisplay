@@ -1,8 +1,7 @@
 package com.rabross.segmenteddisplay.fourteen
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -12,17 +11,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.rabross.segmenteddisplay.BinaryDelimiterDecoder
-import com.rabross.segmenteddisplay.seven.Delimiter
 import com.rabross.segmenteddisplay.Led
 import com.rabross.segmenteddisplay.SingleColorLed
+import com.rabross.segmenteddisplay.seven.Delimiter
 import kotlin.math.pow
 import kotlin.math.sqrt
 
 @Preview
 @Composable
 fun FourteenSegmentDisplayPreview() {
-    Surface(Modifier.fillMaxSize()) {
+    Surface {
         FourteenSegmentDisplay()
     }
 }
@@ -39,30 +39,24 @@ fun DigitalClockFourteenSegmentDisplay(
     delimiterSignal: Int = 0
 ) {
     Row(modifier = modifier) {
-        FourteenSegmentDisplay(
-            modifier = Modifier.weight(1f),
+        FourteenSegmentDisplay(modifier = modifier,
             decoder = BinaryFourteenSegmentDecoder(hourFirst)
         )
-        FourteenSegmentDisplay(
-            modifier = Modifier.weight(1f),
+        FourteenSegmentDisplay(modifier = modifier,
             decoder = BinaryFourteenSegmentDecoder(hourSecond)
         )
-        Delimiter(modifier = Modifier.weight(0.5f), decoder = BinaryDelimiterDecoder(delimiterSignal))
-        FourteenSegmentDisplay(
-            modifier = Modifier.weight(1f),
+        Delimiter(modifier = modifier, decoder = BinaryDelimiterDecoder(delimiterSignal))
+        FourteenSegmentDisplay(modifier = modifier,
             decoder = BinaryFourteenSegmentDecoder(minuteFirst)
         )
-        FourteenSegmentDisplay(
-            modifier = Modifier.weight(1f),
+        FourteenSegmentDisplay(modifier = modifier,
             decoder = BinaryFourteenSegmentDecoder(minuteSecond)
         )
-        Delimiter(modifier = Modifier.weight(0.5f), decoder = BinaryDelimiterDecoder(delimiterSignal))
-        FourteenSegmentDisplay(
-            modifier = Modifier.weight(1f),
+        Delimiter(modifier = modifier, decoder = BinaryDelimiterDecoder(delimiterSignal))
+        FourteenSegmentDisplay(modifier = modifier,
             decoder = BinaryFourteenSegmentDecoder(secondFirst)
         )
-        FourteenSegmentDisplay(
-            modifier = Modifier.weight(1f),
+        FourteenSegmentDisplay(modifier = modifier,
             decoder = BinaryFourteenSegmentDecoder(secondSecond)
         )
     }
@@ -75,7 +69,9 @@ fun FourteenSegmentDisplay(
     led: Led = SingleColorLed(Color.Red, Color.DarkGray.copy(alpha = 0.4f)),
     decoder: FourteenSegmentDecoder = BinaryFourteenSegmentDecoder()
 ) {
-    Canvas(modifier = modifier.fillMaxSize()) {
+    Canvas(modifier = modifier
+        .aspectRatio((1f + segmentScale + 1f) / (1f + segmentScale + 1f + segmentScale + 1f), true)
+        .size(100.dp)) {
 
         val scaleWidth = 1 + segmentScale + 1
         val scaleHeight = 1 + segmentScale + 1 + segmentScale + 1
