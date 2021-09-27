@@ -63,17 +63,17 @@ class SevenSegmentActivity : ComponentActivity() {
                             .fillMaxWidth()
                     ) {
                         SevenSegmentDisplay(
-                            modifier = Modifier.weight(1f),
+                            modifier = Modifier.weight(1f).padding(4.dp),
                             decoder = BinarySevenSegmentDecoder(animationFallFill.value),
                             led = redLed
                         )
                         SevenSegmentDisplay(
-                            modifier = Modifier.weight(1f),
+                            modifier = Modifier.weight(1f).padding(4.dp),
                             decoder = BinarySevenSegmentDecoder(animationRightToLeftFill.value),
                             led = greenLed
                         )
                         SevenSegmentDisplay(
-                            modifier = Modifier.weight(1f),
+                            modifier = Modifier.weight(1f).padding(4.dp),
                             decoder = BinarySevenSegmentDecoder(animationRoundOutsideDoubleSeg.value),
                             led = blueLed
                         )
