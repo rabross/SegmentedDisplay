@@ -1,48 +1,46 @@
 package com.rabross.segmenteddisplay.app
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color as ComposeColor
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.scale
 import com.rabross.segmenteddisplay.seven.SevenSegmentDecoder
 import com.rabross.segmenteddisplay.seven.SevenSegmentDisplay
 import java.nio.ByteBuffer
 import java.security.InvalidParameterException
 import kotlin.time.ExperimentalTime
+import androidx.compose.ui.graphics.Color as ComposeColor
 
 @ExperimentalTime
 class SevenSegmentScreenActivity : ComponentActivity() {
 
-    private val rows = 1
-    private val columns = 1
-
-    private val bitmap = Bitmap.createBitmap(2, 5, Bitmap.Config.ALPHA_8)
-    private val canvas = Canvas(bitmap)
+    private val columns = 20
+    private val rows = 6
+    private val bufferWidth = 40
+    private val bufferHeight = 30
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        canvas.drawColor(Color.TRANSPARENT)
-        canvas.drawLine(0f, 2f, 2f, 2f, Paint().apply{
-            color = Color.WHITE
-        })
-
+        val bitmap = Bitmap.createBitmap(bufferWidth, bufferHeight, Bitmap.Config.ALPHA_8)
         val screenBuffer = ByteBuffer.allocate(bitmap.allocationByteCount)
+        Canvas(bitmap).drawBitmap(
+            BitmapFactory.decodeResource(resources, R.drawable.bitmap)
+                .scale(bufferWidth, bufferHeight), 0f, 0f, null
+        )
         bitmap.copyPixelsToBuffer(screenBuffer)
 
         setContent {
-
-            Surface(color = ComposeColor.Black) {
+            Surface(modifier = Modifier.fillMaxSize(), color = ComposeColor.Black) {
                 Column(modifier = Modifier.padding(24.dp)) {
                     for (row in 0 until rows) {
                         Row {
@@ -52,7 +50,7 @@ class SevenSegmentScreenActivity : ComponentActivity() {
                                     modifier = Modifier
                                         .weight(1f)
                                         .padding(2.dp),
-                                    decoder = BufferDecoder(screenBuffer, 2, 5, 1, 1, sevenSegmentIndex)
+                                    decoder = BufferDecoder(screenBuffer, bufferWidth, bufferHeight, columns, rows, sevenSegmentIndex)
                                 )
                             }
                         }
@@ -70,7 +68,8 @@ class BufferDecoder(
     sevenSegmentCountX: Int,
     sevenSegmentCountY: Int,
     sevenSegmentIndex: Int
-                    ) : SevenSegmentDecoder {
+) : SevenSegmentDecoder {
+
     override val a = buffer.get(mapSingleSegmentToBufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex, 0)).toInt() and 0b00000001
     override val b = buffer.get(mapSingleSegmentToBufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex, 1)).toInt() and 0b00000010
     override val c = buffer.get(mapSingleSegmentToBufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex, 2)).toInt() and 0b00000100
@@ -100,12 +99,14 @@ E = 4
 F = 5
 G = 6
  */
-internal fun mapSingleSegmentToBufferIndex(imageBufferWidth: Int,
-                                                      imageBufferHeight: Int,
-                                                      sevenSegmentCountX: Int,
-                                                      sevenSegmentCountY: Int,
-                                                      sevenSegmentIndex: Int,
-                                                      segmentIndex: Int): Int {
+internal fun mapSingleSegmentToBufferIndex(
+    imageBufferWidth: Int,
+    imageBufferHeight: Int,
+    sevenSegmentCountX: Int,
+    sevenSegmentCountY: Int,
+    sevenSegmentIndex: Int,
+    segmentIndex: Int
+): Int {
     val segmentWidth = 2
     val segmentHeight = 5
 
@@ -114,7 +115,7 @@ internal fun mapSingleSegmentToBufferIndex(imageBufferWidth: Int,
     if(imageBufferHeight < sevenSegmentCountY * segmentHeight) throw InvalidParameterException("Image buffer height must be large enough to support given 7-segment grid height")
 
     val segmentOffsetX = sevenSegmentIndex % sevenSegmentCountX
-    val segmentOffsetY = sevenSegmentIndex / sevenSegmentCountY
+    val segmentOffsetY = sevenSegmentIndex / sevenSegmentCountX
 
     val imageOffsetX = segmentOffsetX * segmentWidth
     val imageOffsetY = segmentOffsetY * segmentHeight

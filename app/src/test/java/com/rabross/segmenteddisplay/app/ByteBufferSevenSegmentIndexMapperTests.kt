@@ -1,11 +1,12 @@
 package com.rabross.segmenteddisplay.app
 
+import org.junit.Assert.assertEquals
 import org.junit.FixMethodOrder
 import org.junit.Test
 import org.junit.runners.MethodSorters
 import java.security.InvalidParameterException
 
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@FixMethodOrder(MethodSorters.JVM)
 internal class ByteBufferSevenSegmentIndexMapperTests {
 
     private val minBufferWidth = 2
@@ -15,7 +16,7 @@ internal class ByteBufferSevenSegmentIndexMapperTests {
     private val minSevenSegmentIndex = 0
 
     @Test
-    internal fun `Minimum buffer - Segment A`() {
+    internal fun `Minimum - Segment A`() {
         val segmentAIndex = 0
         val bufferIndex = mapSingleSegmentToBufferIndex(
                 minBufferWidth,
@@ -25,11 +26,11 @@ internal class ByteBufferSevenSegmentIndexMapperTests {
                 minSevenSegmentIndex,
                 segmentAIndex
             )
-        assert(bufferIndex == 0)
+        assertEquals(0, bufferIndex)
     }
 
     @Test
-    internal fun `Minimum buffer - Segment B`() {
+    internal fun `Minimum - Segment B`() {
         val segmentBIndex = 1
         val bufferIndex = mapSingleSegmentToBufferIndex(
                 minBufferWidth,
@@ -39,11 +40,11 @@ internal class ByteBufferSevenSegmentIndexMapperTests {
                 minSevenSegmentIndex,
                 segmentBIndex
             )
-        assert(bufferIndex == 3)
+        assertEquals(3, bufferIndex)
     }
 
     @Test
-    internal fun `Minimum buffer - Segment C`() {
+    internal fun `Minimum - Segment C`() {
         val segmentCIndex = 2
         val bufferIndex = mapSingleSegmentToBufferIndex(
                 minBufferWidth,
@@ -53,11 +54,11 @@ internal class ByteBufferSevenSegmentIndexMapperTests {
                 minSevenSegmentIndex,
                 segmentCIndex
             )
-        assert(bufferIndex == 7)
+        assertEquals(7, bufferIndex)
     }
 
     @Test
-    internal fun `Minimum buffer - Segment D`() {
+    internal fun `Minimum - Segment D`() {
         val segmentDIndex = 3
         val bufferIndex = mapSingleSegmentToBufferIndex(
                 minBufferWidth,
@@ -67,11 +68,11 @@ internal class ByteBufferSevenSegmentIndexMapperTests {
                 minSevenSegmentIndex,
                 segmentDIndex
             )
-        assert(bufferIndex == 8)
+        assertEquals(8, bufferIndex)
     }
 
     @Test
-    internal fun `Minimum buffer - Segment E`() {
+    internal fun `Minimum - Segment E`() {
         val segmentEIndex = 4
         val bufferIndex = mapSingleSegmentToBufferIndex(
                 minBufferWidth,
@@ -81,11 +82,11 @@ internal class ByteBufferSevenSegmentIndexMapperTests {
                 minSevenSegmentIndex,
                 segmentEIndex
             )
-        assert(bufferIndex == 6)
+        assertEquals(6, bufferIndex)
     }
 
     @Test
-    internal fun `Minimum buffer - Segment F`() {
+    internal fun `Minimum - Segment F`() {
         val segmentFIndex = 5
         val bufferIndex = mapSingleSegmentToBufferIndex(
                 minBufferWidth,
@@ -95,11 +96,11 @@ internal class ByteBufferSevenSegmentIndexMapperTests {
                 minSevenSegmentIndex,
                 segmentFIndex
             )
-        assert(bufferIndex == 2)
+        assertEquals(2, bufferIndex)
     }
 
     @Test
-    internal fun `Minimum buffer - Segment G`() {
+    internal fun `Minimum - Segment G`() {
         val segmentGIndex = 6
         val bufferIndex = mapSingleSegmentToBufferIndex(
                 minBufferWidth,
@@ -109,7 +110,178 @@ internal class ByteBufferSevenSegmentIndexMapperTests {
                 minSevenSegmentIndex,
                 segmentGIndex
             )
-        assert(bufferIndex == 4)
+        assertEquals(4, bufferIndex)
+    }
+
+    @Test
+    internal fun `Square Grid - Index 0 Segment A`() {
+        val sevenSegmentCountX = 2
+        val sevenSegmentCountY = 2
+        val bufferWidth = 2 * sevenSegmentCountX
+        val bufferHeight = 5 * sevenSegmentCountY
+        val sevenSegmentIndex = 0
+        val segmentIndex = 0
+        val bufferIndex = mapSingleSegmentToBufferIndex(
+            bufferWidth,
+            bufferHeight,
+            sevenSegmentCountX,
+            sevenSegmentCountY,
+            sevenSegmentIndex,
+            segmentIndex
+        )
+        assertEquals(0, bufferIndex)
+    }
+
+    @Test
+    internal fun `Square Grid - Index 1 Segment A`() {
+        val sevenSegmentCountX = 2
+        val sevenSegmentCountY = 2
+        val bufferWidth = 2 * sevenSegmentCountX
+        val bufferHeight = 5 * sevenSegmentCountY
+        val sevenSegmentIndex = 1
+        val segmentIndex = 0
+        val bufferIndex = mapSingleSegmentToBufferIndex(
+            bufferWidth,
+            bufferHeight,
+            sevenSegmentCountX,
+            sevenSegmentCountY,
+            sevenSegmentIndex,
+            segmentIndex
+        )
+        assertEquals(2, bufferIndex)
+    }
+
+    @Test
+    internal fun `Square Grid - Index 2 Segment A`() {
+        val sevenSegmentCountX = 2
+        val sevenSegmentCountY = 2
+        val bufferWidth = 2 * sevenSegmentCountX
+        val bufferHeight = 5 * sevenSegmentCountY
+        val sevenSegmentIndex = 2
+        val segmentIndex = 0
+        val bufferIndex = mapSingleSegmentToBufferIndex(
+            bufferWidth,
+            bufferHeight,
+            sevenSegmentCountX,
+            sevenSegmentCountY,
+            sevenSegmentIndex,
+            segmentIndex
+        )
+        assertEquals(20, bufferIndex)
+    }
+
+    @Test
+    internal fun `Square Grid - Index 3 Segment A`() {
+        val sevenSegmentCountX = 2
+        val sevenSegmentCountY = 2
+        val bufferWidth = 2 * sevenSegmentCountX
+        val bufferHeight = 5 * sevenSegmentCountY
+        val sevenSegmentIndex = 3
+        val segmentIndex = 0
+        val bufferIndex = mapSingleSegmentToBufferIndex(
+            bufferWidth,
+            bufferHeight,
+            sevenSegmentCountX,
+            sevenSegmentCountY,
+            sevenSegmentIndex,
+            segmentIndex
+        )
+        assertEquals(22, bufferIndex)
+    }
+
+    @Test
+    internal fun `Square Grid - Index 0 Segment B`() {
+        val sevenSegmentCountX = 2
+        val sevenSegmentCountY = 2
+        val bufferWidth = 2 * sevenSegmentCountX
+        val bufferHeight = 5 * sevenSegmentCountY
+        val sevenSegmentIndex = 0
+        val segmentIndex = 1
+        val bufferIndex = mapSingleSegmentToBufferIndex(
+            bufferWidth,
+            bufferHeight,
+            sevenSegmentCountX,
+            sevenSegmentCountY,
+            sevenSegmentIndex,
+            segmentIndex
+        )
+        assertEquals(5, bufferIndex)
+    }
+
+    @Test
+    internal fun `Square Grid - Index 1 Segment B`() {
+        val sevenSegmentCountX = 2
+        val sevenSegmentCountY = 2
+        val bufferWidth = 2 * sevenSegmentCountX
+        val bufferHeight = 5 * sevenSegmentCountY
+        val sevenSegmentIndex = 1
+        val segmentIndex = 1
+        val bufferIndex = mapSingleSegmentToBufferIndex(
+            bufferWidth,
+            bufferHeight,
+            sevenSegmentCountX,
+            sevenSegmentCountY,
+            sevenSegmentIndex,
+            segmentIndex
+        )
+        assertEquals(7, bufferIndex)
+    }
+
+    @Test
+    internal fun `Square Grid - Index 2 Segment B`() {
+        val sevenSegmentCountX = 2
+        val sevenSegmentCountY = 2
+        val bufferWidth = 2 * sevenSegmentCountX
+        val bufferHeight = 5 * sevenSegmentCountY
+        val sevenSegmentIndex = 2
+        val segmentIndex = 1
+        val bufferIndex = mapSingleSegmentToBufferIndex(
+            bufferWidth,
+            bufferHeight,
+            sevenSegmentCountX,
+            sevenSegmentCountY,
+            sevenSegmentIndex,
+            segmentIndex
+        )
+        assertEquals(25, bufferIndex)
+    }
+
+    @Test
+    internal fun `Square Grid - Index 3 Segment B`() {
+        val sevenSegmentCountX = 2
+        val sevenSegmentCountY = 2
+        val bufferWidth = 2 * sevenSegmentCountX
+        val bufferHeight = 5 * sevenSegmentCountY
+        val sevenSegmentIndex = 3
+        val segmentIndex = 1
+        val bufferIndex = mapSingleSegmentToBufferIndex(
+            bufferWidth,
+            bufferHeight,
+            sevenSegmentCountX,
+            sevenSegmentCountY,
+            sevenSegmentIndex,
+            segmentIndex
+        )
+        assertEquals(27, bufferIndex)
+    }
+
+    @Test
+    internal fun `Rectangle Grid - Index 3 Segment 0`() {
+        val sevenSegmentCountX = 5
+        val sevenSegmentCountY = 3
+        val bufferWidth = 2 * sevenSegmentCountX
+        val bufferHeight = 5 * sevenSegmentCountY
+        val sevenSegmentIndex = 3
+        val segmentIndex = 0
+        val bufferIndex = mapSingleSegmentToBufferIndex(
+            bufferWidth,
+            bufferHeight,
+            sevenSegmentCountX,
+            sevenSegmentCountY,
+            sevenSegmentIndex,
+            segmentIndex
+        )
+        assertEquals(6, bufferIndex)
     }
 
     @Test(expected = InvalidParameterException::class)
