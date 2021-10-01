@@ -21,6 +21,7 @@
         <activity android:name=".TypingActivity" android:exported="true" />
         <activity android:name=".FourteenSegmentActivity" android:exported="true" />
         <activity android:name=".SevenSegmentHeartActivity" android:exported="true" />
+        <activity android:name=".SevenSegmentScreenActivity" android:exported="true" />
     </application>
 
 </manifest>
