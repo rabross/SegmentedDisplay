@@ -18,7 +18,7 @@ Hook up to a data stream to create animations.
 
 ## Dependency
 
-    implementation 'com.github.rabross:SegmentedDisplay:v0.3.7'
+    implementation 'com.github.rabross:SegmentedDisplay:0.3.8'
 
 Add the JitPack repository to your root `build.gradle` file
 
