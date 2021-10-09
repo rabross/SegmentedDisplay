@@ -163,29 +163,31 @@ fun DigitalClockSevenSegmentDisplay(
 ) {
     Row(modifier = modifier) {
         SevenSegmentDisplay(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(1f).padding(4.dp),
             decoder = BinarySevenSegmentDecoder(hourFirst)
         )
         SevenSegmentDisplay(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(1f).padding(4.dp),
             decoder = BinarySevenSegmentDecoder(hourSecond)
         )
-        Delimiter(modifier = Modifier.weight(1f), decoder = BinaryDelimiterDecoder(delimiterSignal))
+        Delimiter(modifier = Modifier.weight(1f).padding(4.dp),
+            decoder = BinaryDelimiterDecoder(delimiterSignal))
         SevenSegmentDisplay(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(1f).padding(4.dp),
             decoder = BinarySevenSegmentDecoder(minuteFirst)
         )
         SevenSegmentDisplay(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(1f).padding(4.dp),
             decoder = BinarySevenSegmentDecoder(minuteSecond)
         )
-        Delimiter(modifier = Modifier.weight(1f), decoder = BinaryDelimiterDecoder(delimiterSignal))
+        Delimiter(modifier = Modifier.weight(1f).padding(4.dp),
+            decoder = BinaryDelimiterDecoder(delimiterSignal))
         SevenSegmentDisplay(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(1f).padding(4.dp),
             decoder = BinarySevenSegmentDecoder(secondFirst)
         )
         SevenSegmentDisplay(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(1f).padding(4.dp),
             decoder = BinarySevenSegmentDecoder(secondSecond)
         )
     }

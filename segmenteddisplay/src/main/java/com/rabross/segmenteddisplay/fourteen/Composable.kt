@@ -39,24 +39,26 @@ fun DigitalClockFourteenSegmentDisplay(
     delimiterSignal: Int = 0
 ) {
     Row(modifier = modifier) {
-        FourteenSegmentDisplay(modifier = modifier,
+        FourteenSegmentDisplay(modifier = modifier.padding(4.dp),
             decoder = BinaryFourteenSegmentDecoder(hourFirst)
         )
-        FourteenSegmentDisplay(modifier = modifier,
+        FourteenSegmentDisplay(modifier = modifier.padding(4.dp),
             decoder = BinaryFourteenSegmentDecoder(hourSecond)
         )
-        Delimiter(modifier = modifier, decoder = BinaryDelimiterDecoder(delimiterSignal))
-        FourteenSegmentDisplay(modifier = modifier,
+        Delimiter(modifier = modifier.padding(4.dp),
+            decoder = BinaryDelimiterDecoder(delimiterSignal))
+        FourteenSegmentDisplay(modifier = modifier.padding(4.dp),
             decoder = BinaryFourteenSegmentDecoder(minuteFirst)
         )
-        FourteenSegmentDisplay(modifier = modifier,
+        FourteenSegmentDisplay(modifier = modifier.padding(4.dp),
             decoder = BinaryFourteenSegmentDecoder(minuteSecond)
         )
-        Delimiter(modifier = modifier, decoder = BinaryDelimiterDecoder(delimiterSignal))
-        FourteenSegmentDisplay(modifier = modifier,
+        Delimiter(modifier = modifier.padding(4.dp),
+            decoder = BinaryDelimiterDecoder(delimiterSignal))
+        FourteenSegmentDisplay(modifier = modifier.padding(4.dp),
             decoder = BinaryFourteenSegmentDecoder(secondFirst)
         )
-        FourteenSegmentDisplay(modifier = modifier,
+        FourteenSegmentDisplay(modifier = modifier.padding(4.dp),
             decoder = BinaryFourteenSegmentDecoder(secondSecond)
         )
     }
