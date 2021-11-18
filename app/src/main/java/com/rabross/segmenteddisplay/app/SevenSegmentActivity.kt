@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
 import com.rabross.segmenteddisplay.SingleColorLed
 import com.rabross.segmenteddisplay.seven.Animations
-import com.rabross.segmenteddisplay.seven.BinarySevenSegmentDecoder
+import com.rabross.segmenteddisplay.seven.BinaryDecoder
 import com.rabross.segmenteddisplay.seven.DigitalClockSevenSegmentDisplay
 import com.rabross.segmenteddisplay.seven.SevenSegmentDisplay
 import kotlinx.coroutines.currentCoroutineContext
@@ -49,12 +49,12 @@ class SevenSegmentActivity : ComponentActivity() {
                 Column(modifier = Modifier.padding(24.dp)) {
                     DigitalClockSevenSegmentDisplay(
                         Modifier.weight(1f),
-                        BinarySevenSegmentDecoder.mapToDisplay(hourFirst.value),
-                        BinarySevenSegmentDecoder.mapToDisplay(hourSecond.value),
-                        BinarySevenSegmentDecoder.mapToDisplay(minuteFirst.value),
-                        BinarySevenSegmentDecoder.mapToDisplay(minuteSecond.value),
-                        BinarySevenSegmentDecoder.mapToDisplay(secondFirst.value),
-                        BinarySevenSegmentDecoder.mapToDisplay(secondSecond.value),
+                        BinaryDecoder.mapToDisplay(hourFirst.value),
+                        BinaryDecoder.mapToDisplay(hourSecond.value),
+                        BinaryDecoder.mapToDisplay(minuteFirst.value),
+                        BinaryDecoder.mapToDisplay(minuteSecond.value),
+                        BinaryDecoder.mapToDisplay(secondFirst.value),
+                        BinaryDecoder.mapToDisplay(secondSecond.value),
                         3
                     )
                     Row(
@@ -64,17 +64,17 @@ class SevenSegmentActivity : ComponentActivity() {
                     ) {
                         SevenSegmentDisplay(
                             modifier = Modifier.weight(1f).padding(4.dp),
-                            decoder = BinarySevenSegmentDecoder(animationFallFill.value),
+                            decoder = BinaryDecoder(animationFallFill.value),
                             led = redLed
                         )
                         SevenSegmentDisplay(
                             modifier = Modifier.weight(1f).padding(4.dp),
-                            decoder = BinarySevenSegmentDecoder(animationRightToLeftFill.value),
+                            decoder = BinaryDecoder(animationRightToLeftFill.value),
                             led = greenLed
                         )
                         SevenSegmentDisplay(
                             modifier = Modifier.weight(1f).padding(4.dp),
-                            decoder = BinarySevenSegmentDecoder(animationRoundOutsideDoubleSeg.value),
+                            decoder = BinaryDecoder(animationRoundOutsideDoubleSeg.value),
                             led = blueLed
                         )
                     }

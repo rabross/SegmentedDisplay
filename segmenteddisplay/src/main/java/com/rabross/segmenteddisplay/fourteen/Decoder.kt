@@ -1,6 +1,6 @@
 package com.rabross.segmenteddisplay.fourteen
 
-interface FourteenSegmentDecoder {
+interface Decoder {
     val a: Int
     val b: Int
     val c: Int
@@ -17,15 +17,15 @@ interface FourteenSegmentDecoder {
     val m: Int
 }
 
-class BinaryFourteenSegmentDecoder(data: Int = 0) : FourteenSegmentDecoder {
-    override val a  = data and 0b00000001
-    override val b  = data and 0b00000010
-    override val c  = data and 0b00000100
-    override val d  = data and 0b00001000
-    override val e  = data and 0b00010000
-    override val f  = data and 0b00100000
-    override val g1 = data and 0b01000000
-    override val g2 = data and 0b10000000
+class BinaryDecoder(data: Int = 0) : Decoder {
+    override val a  = data and 0b0000000000000001
+    override val b  = data and 0b0000000000000010
+    override val c  = data and 0b0000000000000100
+    override val d  = data and 0b0000000000001000
+    override val e  = data and 0b0000000000010000
+    override val f  = data and 0b0000000000100000
+    override val g1 = data and 0b0000000001000000
+    override val g2 = data and 0b0000000010000000
     override val h  = data and 0b0000000100000000
     override val i  = data and 0b0000001000000000
     override val j  = data and 0b0000010000000000

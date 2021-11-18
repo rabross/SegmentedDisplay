@@ -12,10 +12,10 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.rabross.segmenteddisplay.BinaryDelimiterDecoder
+import com.rabross.segmenteddisplay.delimiter.BinaryDecoder as DelimiterBinaryDecoder
 import com.rabross.segmenteddisplay.Led
 import com.rabross.segmenteddisplay.SingleColorLed
-import com.rabross.segmenteddisplay.seven.Delimiter
+import com.rabross.segmenteddisplay.delimiter.Delimiter
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -40,26 +40,28 @@ fun DigitalClockFourteenSegmentDisplay(
 ) {
     Row(modifier = modifier) {
         FourteenSegmentDisplay(modifier = modifier.padding(4.dp),
-            decoder = BinaryFourteenSegmentDecoder(hourFirst)
+            decoder = BinaryDecoder(hourFirst)
         )
         FourteenSegmentDisplay(modifier = modifier.padding(4.dp),
-            decoder = BinaryFourteenSegmentDecoder(hourSecond)
-        )
-        Delimiter(modifier = modifier.padding(4.dp),
-            decoder = BinaryDelimiterDecoder(delimiterSignal))
-        FourteenSegmentDisplay(modifier = modifier.padding(4.dp),
-            decoder = BinaryFourteenSegmentDecoder(minuteFirst)
-        )
-        FourteenSegmentDisplay(modifier = modifier.padding(4.dp),
-            decoder = BinaryFourteenSegmentDecoder(minuteSecond)
+            decoder = BinaryDecoder(hourSecond)
         )
         Delimiter(modifier = modifier.padding(4.dp),
-            decoder = BinaryDelimiterDecoder(delimiterSignal))
-        FourteenSegmentDisplay(modifier = modifier.padding(4.dp),
-            decoder = BinaryFourteenSegmentDecoder(secondFirst)
+            decoder = DelimiterBinaryDecoder(delimiterSignal)
         )
         FourteenSegmentDisplay(modifier = modifier.padding(4.dp),
-            decoder = BinaryFourteenSegmentDecoder(secondSecond)
+            decoder = BinaryDecoder(minuteFirst)
+        )
+        FourteenSegmentDisplay(modifier = modifier.padding(4.dp),
+            decoder = BinaryDecoder(minuteSecond)
+        )
+        Delimiter(modifier = modifier.padding(4.dp),
+            decoder = DelimiterBinaryDecoder(delimiterSignal)
+        )
+        FourteenSegmentDisplay(modifier = modifier.padding(4.dp),
+            decoder = BinaryDecoder(secondFirst)
+        )
+        FourteenSegmentDisplay(modifier = modifier.padding(4.dp),
+            decoder = BinaryDecoder(secondSecond)
         )
     }
 }
@@ -69,7 +71,7 @@ fun FourteenSegmentDisplay(
     modifier: Modifier = Modifier,
     segmentScale: Int = 4,
     led: Led = SingleColorLed(Color.Red, Color.DarkGray.copy(alpha = 0.4f)),
-    decoder: FourteenSegmentDecoder = BinaryFourteenSegmentDecoder()
+    decoder: Decoder = BinaryDecoder()
 ) {
     Canvas(modifier = modifier
         .aspectRatio((1f + segmentScale + 1f) / (1f + segmentScale + 1f + segmentScale + 1f), true)

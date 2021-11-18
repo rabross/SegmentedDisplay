@@ -10,7 +10,7 @@ import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.rabross.segmenteddisplay.seven.BinarySevenSegmentDecoder
+import com.rabross.segmenteddisplay.seven.BinaryDecoder
 import com.rabross.segmenteddisplay.seven.SevenSegmentDisplay
 import kotlin.time.ExperimentalTime
 
@@ -34,7 +34,7 @@ class SevenSegmentHeartActivity : ComponentActivity() {
                                     modifier = Modifier
                                         .weight(1f)
                                         .padding(2.dp),
-                                    decoder = BinarySevenSegmentDecoder(buffer[(row * columns) + column])
+                                    decoder = BinaryDecoder(buffer[(row * columns) + column])
                                 )
                             }
                         }

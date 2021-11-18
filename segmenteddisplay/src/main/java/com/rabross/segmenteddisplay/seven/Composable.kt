@@ -12,11 +12,10 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.rabross.segmenteddisplay.BinaryDelimiterDecoder
-import com.rabross.segmenteddisplay.DelimiterDecoder
+import com.rabross.segmenteddisplay.delimiter.BinaryDecoder as DelimiterBinaryDecoder
 import com.rabross.segmenteddisplay.Led
 import com.rabross.segmenteddisplay.SingleColorLed
-
+import com.rabross.segmenteddisplay.delimiter.Delimiter
 
 @Preview
 @Composable
@@ -39,7 +38,7 @@ fun SevenSegmentDisplay(
     modifier: Modifier = Modifier,
     segmentScale: Int = 3,
     led: Led = SingleColorLed(Color.Red, Color.DarkGray.copy(alpha = 0.3f)),
-    decoder: SevenSegmentDecoder = BinarySevenSegmentDecoder()
+    decoder: Decoder = BinaryDecoder()
 ) {
     Canvas(modifier = modifier
         .aspectRatio((1f + segmentScale + 1f) / (1f + segmentScale + 1f + segmentScale + 1f), true)
@@ -109,48 +108,6 @@ private fun DrawScope.drawVerticalSegment(color: Color, offset: Offset, size: Si
 }
 
 @Composable
-fun Delimiter(
-    modifier: Modifier = Modifier,
-    segmentScale: Int = 3,
-    led: Led = SingleColorLed(Color.Red, Color.DarkGray.copy(alpha = 0.3f)),
-    decoder: DelimiterDecoder = BinaryDelimiterDecoder()
-) {
-    Canvas(
-        modifier = modifier
-            .aspectRatio(((1f + segmentScale + 1f)) / (1f + segmentScale + 1f + segmentScale + 1f), true)
-            .size(100.dp)
-    ) {
-        val scaleWidth = 1 + segmentScale + 1
-        val scaleHeight = 1 + segmentScale + 1 + segmentScale + 1
-
-        val segmentWidthByWidth = size.width / scaleWidth
-        val segmentWidthByHeight = size.height / scaleHeight
-
-        val segmentWidth = if (scaleHeight * segmentWidthByWidth < size.height) segmentWidthByWidth else segmentWidthByHeight
-
-        val totalWidth = segmentWidth * scaleWidth
-        val totalHeight = segmentWidth * scaleHeight
-
-        drawDelimiter(
-            led.signal(decoder.a),
-            led.signal(decoder.b),
-            segmentWidth / 2,
-            Offset(0f, segmentWidth / 2),
-            Size(totalWidth, totalHeight - segmentWidth)
-        )
-    }
-}
-
-private fun Boolean.toInt() = this.compareTo(false)
-
-private fun DrawScope.drawDelimiter(upDotColor: Color, downDotColor: Color, radius: Float, offset: Offset, size: Size) {
-    val upDotCenterOffset = Offset(size.width / 2 + offset.x, size.height / 4 + offset.y)
-    val downDotCenterOffset = Offset(size.width / 2 + offset.x, size.height / 4 * 3 + offset.y)
-    drawCircle(upDotColor, radius, upDotCenterOffset)
-    drawCircle(downDotColor, radius, downDotCenterOffset)
-}
-
-@Composable
 fun DigitalClockSevenSegmentDisplay(
     modifier: Modifier = Modifier,
     hourFirst: Int = 0,
@@ -164,31 +121,33 @@ fun DigitalClockSevenSegmentDisplay(
     Row(modifier = modifier) {
         SevenSegmentDisplay(
             modifier = Modifier.weight(1f).padding(4.dp),
-            decoder = BinarySevenSegmentDecoder(hourFirst)
+            decoder = BinaryDecoder(hourFirst)
         )
         SevenSegmentDisplay(
             modifier = Modifier.weight(1f).padding(4.dp),
-            decoder = BinarySevenSegmentDecoder(hourSecond)
-        )
-        Delimiter(modifier = Modifier.weight(1f).padding(4.dp),
-            decoder = BinaryDelimiterDecoder(delimiterSignal))
-        SevenSegmentDisplay(
-            modifier = Modifier.weight(1f).padding(4.dp),
-            decoder = BinarySevenSegmentDecoder(minuteFirst)
-        )
-        SevenSegmentDisplay(
-            modifier = Modifier.weight(1f).padding(4.dp),
-            decoder = BinarySevenSegmentDecoder(minuteSecond)
+            decoder = BinaryDecoder(hourSecond)
         )
         Delimiter(modifier = Modifier.weight(1f).padding(4.dp),
-            decoder = BinaryDelimiterDecoder(delimiterSignal))
-        SevenSegmentDisplay(
-            modifier = Modifier.weight(1f).padding(4.dp),
-            decoder = BinarySevenSegmentDecoder(secondFirst)
+            decoder = DelimiterBinaryDecoder(delimiterSignal)
         )
         SevenSegmentDisplay(
             modifier = Modifier.weight(1f).padding(4.dp),
-            decoder = BinarySevenSegmentDecoder(secondSecond)
+            decoder = BinaryDecoder(minuteFirst)
+        )
+        SevenSegmentDisplay(
+            modifier = Modifier.weight(1f).padding(4.dp),
+            decoder = BinaryDecoder(minuteSecond)
+        )
+        Delimiter(modifier = Modifier.weight(1f).padding(4.dp),
+            decoder = DelimiterBinaryDecoder(delimiterSignal)
+        )
+        SevenSegmentDisplay(
+            modifier = Modifier.weight(1f).padding(4.dp),
+            decoder = BinaryDecoder(secondFirst)
+        )
+        SevenSegmentDisplay(
+            modifier = Modifier.weight(1f).padding(4.dp),
+            decoder = BinaryDecoder(secondSecond)
         )
     }
 }

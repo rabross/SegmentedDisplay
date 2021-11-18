@@ -14,7 +14,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.rabross.segmenteddisplay.fourteen.BinaryFourteenSegmentDecoder
+import com.rabross.segmenteddisplay.fourteen.BinaryDecoder
 import com.rabross.segmenteddisplay.fourteen.FourteenSegmentDisplay
 import kotlin.time.ExperimentalTime
 
@@ -39,8 +39,8 @@ class TypingActivity : ComponentActivity() {
                             for (c in text) {
                                 FourteenSegmentDisplay(
                                     modifier = Modifier.weight(1f),
-                                    decoder = BinaryFourteenSegmentDecoder(
-                                        BinaryFourteenSegmentDecoder.mapToDisplay(c.uppercaseChar())
+                                    decoder = BinaryDecoder(
+                                        BinaryDecoder.mapToDisplay(c.uppercaseChar())
                                     )
                                 )
                             }
