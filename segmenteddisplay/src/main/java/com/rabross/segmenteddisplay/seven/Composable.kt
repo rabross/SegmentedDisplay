@@ -19,22 +19,22 @@ import com.rabross.segmenteddisplay.delimiter.Delimiter
 
 @Preview
 @Composable
-fun SevenSegmentDisplayPreview() {
+fun SegmentDisplayPreview() {
     Surface {
-        SevenSegmentDisplay()
+        SegmentDisplay()
     }
 }
 
 @Preview
 @Composable
-fun DigitalClockDisplayPreview() {
+fun DigitalClockPreview() {
     Surface {
-        DigitalClockSevenSegmentDisplay()
+        DigitalClock()
     }
 }
 
 @Composable
-fun SevenSegmentDisplay(
+fun SegmentDisplay(
     modifier: Modifier = Modifier,
     segmentScale: Int = 3,
     spacingRatio: Float = 0.2f,
@@ -111,7 +111,7 @@ private fun DrawScope.drawVerticalSegment(color: Color, offset: Offset, size: Si
 }
 
 @Composable
-fun DigitalClockSevenSegmentDisplay(
+fun DigitalClock(
     modifier: Modifier = Modifier,
     hourFirst: Int = 0,
     hourSecond: Int = 0,
@@ -122,33 +122,33 @@ fun DigitalClockSevenSegmentDisplay(
     delimiterSignal: Int = 0
 ) {
     Row(modifier = modifier) {
-        SevenSegmentDisplay(
+        SegmentDisplay(
             modifier = Modifier.weight(1f).padding(4.dp),
             decoder = BinaryDecoder(hourFirst)
         )
-        SevenSegmentDisplay(
+        SegmentDisplay(
             modifier = Modifier.weight(1f).padding(4.dp),
             decoder = BinaryDecoder(hourSecond)
         )
         Delimiter(modifier = Modifier.weight(1f).padding(4.dp),
             decoder = DelimiterBinaryDecoder(delimiterSignal)
         )
-        SevenSegmentDisplay(
+        SegmentDisplay(
             modifier = Modifier.weight(1f).padding(4.dp),
             decoder = BinaryDecoder(minuteFirst)
         )
-        SevenSegmentDisplay(
+        SegmentDisplay(
             modifier = Modifier.weight(1f).padding(4.dp),
             decoder = BinaryDecoder(minuteSecond)
         )
         Delimiter(modifier = Modifier.weight(1f).padding(4.dp),
             decoder = DelimiterBinaryDecoder(delimiterSignal)
         )
-        SevenSegmentDisplay(
+        SegmentDisplay(
             modifier = Modifier.weight(1f).padding(4.dp),
             decoder = BinaryDecoder(secondFirst)
         )
-        SevenSegmentDisplay(
+        SegmentDisplay(
             modifier = Modifier.weight(1f).padding(4.dp),
             decoder = BinaryDecoder(secondSecond)
         )

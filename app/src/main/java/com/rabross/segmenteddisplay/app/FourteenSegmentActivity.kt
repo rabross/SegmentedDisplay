@@ -14,8 +14,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
 import com.rabross.segmenteddisplay.fourteen.BinaryDecoder
-import com.rabross.segmenteddisplay.fourteen.DigitalClockFourteenSegmentDisplay
-import com.rabross.segmenteddisplay.fourteen.FourteenSegmentDisplay
+import com.rabross.segmenteddisplay.fourteen.DigitalClock
+import com.rabross.segmenteddisplay.fourteen.SegmentDisplay
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
@@ -40,7 +40,7 @@ class FourteenSegmentActivity : ComponentActivity() {
 
             Surface(color = Color.Black) {
                 Column(modifier = Modifier.padding(24.dp)) {
-                    DigitalClockFourteenSegmentDisplay(
+                    DigitalClock(
                         Modifier.weight(1f),
                         BinaryDecoder.mapToDisplay(hourFirst.value),
                         BinaryDecoder.mapToDisplay(hourSecond.value),
@@ -51,7 +51,7 @@ class FourteenSegmentActivity : ComponentActivity() {
                         3
                     )
                     Row(Modifier.weight(1f)) {
-                        FourteenSegmentDisplay(
+                        SegmentDisplay(
                             modifier = Modifier
                                 .weight(1f)
                                 .padding(4.dp),
@@ -59,7 +59,7 @@ class FourteenSegmentActivity : ComponentActivity() {
                                 BinaryDecoder.mapToDisplay('H')
                             )
                         )
-                        FourteenSegmentDisplay(
+                        SegmentDisplay(
                             modifier = Modifier
                                 .weight(1f)
                                 .padding(4.dp),
@@ -67,7 +67,7 @@ class FourteenSegmentActivity : ComponentActivity() {
                                 BinaryDecoder.mapToDisplay('E')
                             )
                         )
-                        FourteenSegmentDisplay(
+                        SegmentDisplay(
                             modifier = Modifier
                                 .weight(1f)
                                 .padding(4.dp),
@@ -75,7 +75,7 @@ class FourteenSegmentActivity : ComponentActivity() {
                                 BinaryDecoder.mapToDisplay('L')
                             )
                         )
-                        FourteenSegmentDisplay(
+                        SegmentDisplay(
                             modifier = Modifier
                                 .weight(1f)
                                 .padding(4.dp),
@@ -83,7 +83,7 @@ class FourteenSegmentActivity : ComponentActivity() {
                                 BinaryDecoder.mapToDisplay('L')
                             )
                         )
-                        FourteenSegmentDisplay(
+                        SegmentDisplay(
                             modifier = Modifier
                                 .weight(1f)
                                 .padding(4.dp),
@@ -93,7 +93,7 @@ class FourteenSegmentActivity : ComponentActivity() {
                         )
                     }
                     Row(Modifier.weight(1f)) {
-                        FourteenSegmentDisplay(
+                        SegmentDisplay(
                             modifier = Modifier
                                 .weight(1f)
                                 .padding(4.dp),
@@ -101,7 +101,7 @@ class FourteenSegmentActivity : ComponentActivity() {
                                 BinaryDecoder.mapToDisplay('W')
                             )
                         )
-                        FourteenSegmentDisplay(
+                        SegmentDisplay(
                             modifier = Modifier
                                 .weight(1f)
                                 .padding(4.dp),
@@ -109,7 +109,7 @@ class FourteenSegmentActivity : ComponentActivity() {
                                 BinaryDecoder.mapToDisplay('O')
                             )
                         )
-                        FourteenSegmentDisplay(
+                        SegmentDisplay(
                             modifier = Modifier
                                 .weight(1f)
                                 .padding(4.dp),
@@ -117,7 +117,7 @@ class FourteenSegmentActivity : ComponentActivity() {
                                 BinaryDecoder.mapToDisplay('R')
                             )
                         )
-                        FourteenSegmentDisplay(
+                        SegmentDisplay(
                             modifier = Modifier
                                 .weight(1f)
                                 .padding(4.dp),
@@ -125,7 +125,7 @@ class FourteenSegmentActivity : ComponentActivity() {
                                 BinaryDecoder.mapToDisplay('L')
                             )
                         )
-                        FourteenSegmentDisplay(
+                        SegmentDisplay(
                             modifier = Modifier
                                 .weight(1f)
                                 .padding(4.dp),

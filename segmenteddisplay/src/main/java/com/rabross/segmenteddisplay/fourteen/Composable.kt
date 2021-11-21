@@ -23,12 +23,12 @@ import kotlin.math.sqrt
 @Composable
 fun FourteenSegmentDisplayPreview() {
     Surface {
-        FourteenSegmentDisplay()
+        SegmentDisplay()
     }
 }
 
 @Composable
-fun DigitalClockFourteenSegmentDisplay(
+fun DigitalClock(
     modifier: Modifier = Modifier,
     hourFirst: Int = 0,
     hourSecond: Int = 0,
@@ -39,35 +39,35 @@ fun DigitalClockFourteenSegmentDisplay(
     delimiterSignal: Int = 0
 ) {
     Row(modifier = modifier) {
-        FourteenSegmentDisplay(modifier = modifier.padding(4.dp),
+        SegmentDisplay(modifier = modifier.padding(4.dp),
             decoder = BinaryDecoder(hourFirst)
         )
-        FourteenSegmentDisplay(modifier = modifier.padding(4.dp),
+        SegmentDisplay(modifier = modifier.padding(4.dp),
             decoder = BinaryDecoder(hourSecond)
         )
         Delimiter(modifier = modifier.padding(4.dp),
             decoder = DelimiterBinaryDecoder(delimiterSignal)
         )
-        FourteenSegmentDisplay(modifier = modifier.padding(4.dp),
+        SegmentDisplay(modifier = modifier.padding(4.dp),
             decoder = BinaryDecoder(minuteFirst)
         )
-        FourteenSegmentDisplay(modifier = modifier.padding(4.dp),
+        SegmentDisplay(modifier = modifier.padding(4.dp),
             decoder = BinaryDecoder(minuteSecond)
         )
         Delimiter(modifier = modifier.padding(4.dp),
             decoder = DelimiterBinaryDecoder(delimiterSignal)
         )
-        FourteenSegmentDisplay(modifier = modifier.padding(4.dp),
+        SegmentDisplay(modifier = modifier.padding(4.dp),
             decoder = BinaryDecoder(secondFirst)
         )
-        FourteenSegmentDisplay(modifier = modifier.padding(4.dp),
+        SegmentDisplay(modifier = modifier.padding(4.dp),
             decoder = BinaryDecoder(secondSecond)
         )
     }
 }
 
 @Composable
-fun FourteenSegmentDisplay(
+fun SegmentDisplay(
     modifier: Modifier = Modifier,
     segmentScale: Int = 4,
     led: Led = SingleColorLed(Color.Red, Color.DarkGray.copy(alpha = 0.4f)),

@@ -14,8 +14,8 @@ import androidx.lifecycle.lifecycleScope
 import com.rabross.segmenteddisplay.SingleColorLed
 import com.rabross.segmenteddisplay.seven.Animations
 import com.rabross.segmenteddisplay.seven.BinaryDecoder
-import com.rabross.segmenteddisplay.seven.DigitalClockSevenSegmentDisplay
-import com.rabross.segmenteddisplay.seven.SevenSegmentDisplay
+import com.rabross.segmenteddisplay.seven.DigitalClock
+import com.rabross.segmenteddisplay.seven.SegmentDisplay
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
@@ -47,7 +47,7 @@ class SevenSegmentActivity : ComponentActivity() {
 
             Surface(color = Color.Black) {
                 Column(modifier = Modifier.padding(24.dp)) {
-                    DigitalClockSevenSegmentDisplay(
+                    DigitalClock(
                         Modifier.weight(1f),
                         BinaryDecoder.mapToDisplay(hourFirst.value),
                         BinaryDecoder.mapToDisplay(hourSecond.value),
@@ -62,17 +62,17 @@ class SevenSegmentActivity : ComponentActivity() {
                             .weight(1f)
                             .fillMaxWidth()
                     ) {
-                        SevenSegmentDisplay(
+                        SegmentDisplay(
                             modifier = Modifier.weight(1f).padding(4.dp),
                             decoder = BinaryDecoder(animationFallFill.value),
                             led = redLed
                         )
-                        SevenSegmentDisplay(
+                        SegmentDisplay(
                             modifier = Modifier.weight(1f).padding(4.dp),
                             decoder = BinaryDecoder(animationRightToLeftFill.value),
                             led = greenLed
                         )
-                        SevenSegmentDisplay(
+                        SegmentDisplay(
                             modifier = Modifier.weight(1f).padding(4.dp),
                             decoder = BinaryDecoder(animationRoundOutsideDoubleSeg.value),
                             led = blueLed
