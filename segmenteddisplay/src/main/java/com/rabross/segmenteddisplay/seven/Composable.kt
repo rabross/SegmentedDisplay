@@ -37,7 +37,8 @@ fun DigitalClockDisplayPreview() {
 fun SevenSegmentDisplay(
     modifier: Modifier = Modifier,
     segmentScale: Int = 3,
-    led: Led = SingleColorLed(Color.Red, Color.DarkGray.copy(alpha = 0.3f)),
+    spacingRatio: Float = 0.2f,
+    led: Led = defaultLed,
     decoder: Decoder = BinaryDecoder()
 ) {
     Canvas(modifier = modifier
@@ -64,46 +65,48 @@ fun SevenSegmentDisplay(
         val fOffset = Offset(0f, segmentWidth)
         val gOffset = Offset(segmentWidth, segmentLength + segmentWidth)
 
-        drawHorizontalSegment(led.signal(decoder.a), aOffset, horizontalSegmentSize)
-        drawVerticalSegment(led.signal(decoder.b), bOffset, verticalSegmentSize)
-        drawVerticalSegment(led.signal(decoder.c), cOffset, verticalSegmentSize)
-        drawHorizontalSegment(led.signal(decoder.d), dOffset, horizontalSegmentSize)
-        drawVerticalSegment(led.signal(decoder.e), eOffset, verticalSegmentSize)
-        drawVerticalSegment(led.signal(decoder.f), fOffset, verticalSegmentSize)
-        drawHorizontalSegment(led.signal(decoder.g), gOffset, horizontalSegmentSize)
+        val spacingRatioLimited = spacingRatio.coerceIn(0f..0.9f)
+
+        drawHorizontalSegment(led.signal(decoder.a), aOffset, horizontalSegmentSize, spacingRatioLimited)
+        drawVerticalSegment(led.signal(decoder.b), bOffset, verticalSegmentSize, spacingRatioLimited)
+        drawVerticalSegment(led.signal(decoder.c), cOffset, verticalSegmentSize, spacingRatioLimited)
+        drawHorizontalSegment(led.signal(decoder.d), dOffset, horizontalSegmentSize, spacingRatioLimited)
+        drawVerticalSegment(led.signal(decoder.e), eOffset, verticalSegmentSize, spacingRatioLimited)
+        drawVerticalSegment(led.signal(decoder.f), fOffset, verticalSegmentSize, spacingRatioLimited)
+        drawHorizontalSegment(led.signal(decoder.g), gOffset, horizontalSegmentSize, spacingRatioLimited)
     }
 }
 
-private fun DrawScope.drawHorizontalSegment(color: Color, offset: Offset, size: Size) {
+private fun DrawScope.drawHorizontalSegment(color: Color, offset: Offset, size: Size, spacingRatio: Float) {
     val radius = size.minDimension / 2
     val centerX: Float = offset.x + size.width / 2
     val centerY: Float = offset.y + size.height / 2
-    val spacing = radius / 10
-    val hexagonPath = Path()
-    hexagonPath.moveTo(centerX, centerY + radius - spacing)
-    hexagonPath.lineTo(centerX - size.width/2, centerY + radius - spacing)
-    hexagonPath.lineTo(centerX - size.width/2 - radius + spacing, centerY)
-    hexagonPath.lineTo(centerX - size.width/2, centerY - radius + spacing)
-    hexagonPath.lineTo(centerX + size.width/2, centerY - radius + spacing)
-    hexagonPath.lineTo(centerX + size.width/2 + radius - spacing, centerY)
-    hexagonPath.lineTo(centerX + size.width/2, centerY + radius - spacing)
-    hexagonPath.moveTo(centerX, centerY + radius - spacing)
+    val spacing = radius * spacingRatio
+    val hexagonPath = Path().apply {
+        moveTo(centerX, centerY + radius - spacing)
+        lineTo(centerX - size.width/2, centerY + radius - spacing)
+        lineTo(centerX - size.width/2 - radius + spacing, centerY)
+        lineTo(centerX - size.width/2, centerY - radius + spacing)
+        lineTo(centerX + size.width/2, centerY - radius + spacing)
+        lineTo(centerX + size.width/2 + radius - spacing, centerY)
+        lineTo(centerX + size.width/2, centerY + radius - spacing)
+    }
     drawPath(hexagonPath, color)
 }
 
-private fun DrawScope.drawVerticalSegment(color: Color, offset: Offset, size: Size) {
+private fun DrawScope.drawVerticalSegment(color: Color, offset: Offset, size: Size, spacingRatio: Float) {
     val radius = size.minDimension / 2
     val centerX: Float = offset.x + size.width / 2
     val centerY: Float = offset.y + size.height / 2
-    val spacing = radius / 10
-    val hexagonPath = Path()
-    hexagonPath.moveTo(centerX, centerY + radius + size.height/2 - spacing)
-    hexagonPath.lineTo(centerX - radius + spacing, centerY + size.height/2)
-    hexagonPath.lineTo(centerX - radius + spacing, centerY - size.height/2)
-    hexagonPath.lineTo(centerX, centerY - radius - size.height/2 + spacing)
-    hexagonPath.lineTo(centerX + radius - spacing, centerY - size.height/2)
-    hexagonPath.lineTo(centerX + radius - spacing, centerY + size.height/2)
-    hexagonPath.moveTo(centerX, centerY + radius + size.height/2 - spacing)
+    val spacing = radius * spacingRatio
+    val hexagonPath = Path().apply {
+        moveTo(centerX, centerY + radius + size.height/2 - spacing)
+        lineTo(centerX - radius + spacing, centerY + size.height/2)
+        lineTo(centerX - radius + spacing, centerY - size.height/2)
+        lineTo(centerX, centerY - radius - size.height/2 + spacing)
+        lineTo(centerX + radius - spacing, centerY - size.height/2)
+        lineTo(centerX + radius - spacing, centerY + size.height/2)
+    }
     drawPath(hexagonPath, color)
 }
 
@@ -151,3 +154,5 @@ fun DigitalClockSevenSegmentDisplay(
         )
     }
 }
+
+private val defaultLed = SingleColorLed(Color.Red, Color.DarkGray.copy(alpha = 0.3f))
