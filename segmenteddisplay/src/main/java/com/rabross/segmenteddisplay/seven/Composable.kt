@@ -1,13 +1,18 @@
 package com.rabross.segmenteddisplay.seven
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -18,9 +23,23 @@ import com.rabross.segmenteddisplay.delimiter.BinaryDecoder as DelimiterBinaryDe
 
 @Preview
 @Composable
-fun SegmentDisplayPreview() {
+fun FlatSegmentDisplayPreview() {
     Surface(color = Color.Black) {
-        SegmentDisplay(decoder = BinaryDecoder(BinaryDecoder.mapToDisplay(3)))
+        SegmentDisplay(
+            decoder = BinaryDecoder(BinaryDecoder.mapToDisplay(5)),
+            segmentStyle = SegmentStyle.FLAT
+        )
+    }
+}
+
+@Preview
+@Composable
+fun DiffuserSegmentDisplayPreview() {
+    Surface(color = Color.Black) {
+        SegmentDisplay(
+            decoder = BinaryDecoder(BinaryDecoder.mapToDisplay(5)),
+            segmentStyle = SegmentStyle.DIFFUSER
+        )
     }
 }
 
@@ -38,6 +57,7 @@ fun SegmentDisplay(
     segmentScale: Int = 3,
     spacingRatio: Float = 0.2f,
     led: Led = defaultLed,
+    segmentStyle: SegmentStyle = SegmentStyle.FLAT,
     decoder: Decoder = BinaryDecoder()
 ) {
     Canvas(modifier = modifier
@@ -66,17 +86,17 @@ fun SegmentDisplay(
 
         val spacingRatioLimited = spacingRatio.coerceIn(0f..0.9f)
 
-        drawHorizontalSegment(led.signal(decoder.a), aOffset, horizontalSegmentSize, spacingRatioLimited)
-        drawVerticalSegment(led.signal(decoder.b), bOffset, verticalSegmentSize, spacingRatioLimited)
-        drawVerticalSegment(led.signal(decoder.c), cOffset, verticalSegmentSize, spacingRatioLimited)
-        drawHorizontalSegment(led.signal(decoder.d), dOffset, horizontalSegmentSize, spacingRatioLimited)
-        drawVerticalSegment(led.signal(decoder.e), eOffset, verticalSegmentSize, spacingRatioLimited)
-        drawVerticalSegment(led.signal(decoder.f), fOffset, verticalSegmentSize, spacingRatioLimited)
-        drawHorizontalSegment(led.signal(decoder.g), gOffset, horizontalSegmentSize, spacingRatioLimited)
+        drawHorizontalSegment(led.signal(decoder.a), segmentStyle, aOffset, horizontalSegmentSize, spacingRatioLimited)
+        drawVerticalSegment(led.signal(decoder.b), segmentStyle, bOffset, verticalSegmentSize, spacingRatioLimited)
+        drawVerticalSegment(led.signal(decoder.c), segmentStyle, cOffset, verticalSegmentSize, spacingRatioLimited)
+        drawHorizontalSegment(led.signal(decoder.d), segmentStyle, dOffset, horizontalSegmentSize, spacingRatioLimited)
+        drawVerticalSegment(led.signal(decoder.e), segmentStyle, eOffset, verticalSegmentSize, spacingRatioLimited)
+        drawVerticalSegment(led.signal(decoder.f), segmentStyle, fOffset, verticalSegmentSize, spacingRatioLimited)
+        drawHorizontalSegment(led.signal(decoder.g), segmentStyle, gOffset, horizontalSegmentSize, spacingRatioLimited)
     }
 }
 
-private fun DrawScope.drawHorizontalSegment(color: Color, offset: Offset, size: Size, spacingRatio: Float) {
+private fun DrawScope.drawHorizontalSegment(color: Color, segmentStyle: SegmentStyle, offset: Offset, size: Size, spacingRatio: Float) {
     val radius = size.minDimension / 2
     val centerX: Float = offset.x + size.width / 2
     val centerY: Float = offset.y + size.height / 2
@@ -90,11 +110,13 @@ private fun DrawScope.drawHorizontalSegment(color: Color, offset: Offset, size: 
         lineTo(centerX + size.width/2 + radius - spacing, centerY)
         lineTo(centerX + size.width/2, centerY + radius - spacing)
     }
-    drawPath(hexagonPath, color.toLedBrush(Offset(centerX, centerY)))
-//    drawPath(hexagonPath, color)
+    when(segmentStyle) {
+        SegmentStyle.FLAT -> drawPath(hexagonPath, color)
+        SegmentStyle.DIFFUSER -> drawPath(hexagonPath, color.toLedBrush(Offset(centerX, centerY)))
+    }
 }
 
-private fun DrawScope.drawVerticalSegment(color: Color, offset: Offset, size: Size, spacingRatio: Float) {
+private fun DrawScope.drawVerticalSegment(color: Color, segmentStyle: SegmentStyle, offset: Offset, size: Size, spacingRatio: Float) {
     val radius = size.minDimension / 2
     val centerX: Float = offset.x + size.width / 2
     val centerY: Float = offset.y + size.height / 2
@@ -107,20 +129,11 @@ private fun DrawScope.drawVerticalSegment(color: Color, offset: Offset, size: Si
         lineTo(centerX + radius - spacing, centerY - size.height/2)
         lineTo(centerX + radius - spacing, centerY + size.height/2)
     }
-    drawPath(hexagonPath, color.toLedBrush(Offset(centerX, centerY)))
-//    drawPath(hexagonPath, color)
+    when(segmentStyle) {
+        SegmentStyle.FLAT -> drawPath(hexagonPath, color)
+        SegmentStyle.DIFFUSER -> drawPath(hexagonPath, color.toLedBrush(Offset(centerX, centerY)))
+    }
 }
-
-private fun Color.toLedBrush(offset: Offset) = Brush.radialGradient(
-    colors = listOf(
-        this, copy(
-            red = red * 0.3f,
-            green = green * 0.3f,
-            blue = blue * 0.3f
-        )
-    ),
-    center = offset
-)
 
 @Composable
 fun DigitalClock(
@@ -135,36 +148,71 @@ fun DigitalClock(
 ) {
     Row(modifier = modifier) {
         SegmentDisplay(
-            modifier = Modifier.weight(1f).padding(4.dp),
-            decoder = BinaryDecoder(hourFirst)
+            modifier = Modifier
+                .weight(1f)
+                .padding(4.dp),
+            decoder = BinaryDecoder(hourFirst),
+            segmentStyle = SegmentStyle.DIFFUSER
         )
         SegmentDisplay(
-            modifier = Modifier.weight(1f).padding(4.dp),
-            decoder = BinaryDecoder(hourSecond)
+            modifier = Modifier
+                .weight(1f)
+                .padding(4.dp),
+            decoder = BinaryDecoder(hourSecond),
+            segmentStyle = SegmentStyle.DIFFUSER
         )
-        Delimiter(modifier = Modifier.weight(1f).padding(4.dp),
+        Delimiter(modifier = Modifier
+            .weight(1f)
+            .padding(4.dp),
             decoder = DelimiterBinaryDecoder(delimiterSignal)
         )
         SegmentDisplay(
-            modifier = Modifier.weight(1f).padding(4.dp),
-            decoder = BinaryDecoder(minuteFirst)
+            modifier = Modifier
+                .weight(1f)
+                .padding(4.dp),
+            decoder = BinaryDecoder(minuteFirst),
+            segmentStyle = SegmentStyle.DIFFUSER
         )
         SegmentDisplay(
-            modifier = Modifier.weight(1f).padding(4.dp),
-            decoder = BinaryDecoder(minuteSecond)
+            modifier = Modifier
+                .weight(1f)
+                .padding(4.dp),
+            decoder = BinaryDecoder(minuteSecond),
+            segmentStyle = SegmentStyle.DIFFUSER
         )
-        Delimiter(modifier = Modifier.weight(1f).padding(4.dp),
+        Delimiter(modifier = Modifier
+            .weight(1f)
+            .padding(4.dp),
             decoder = DelimiterBinaryDecoder(delimiterSignal)
         )
         SegmentDisplay(
-            modifier = Modifier.weight(1f).padding(4.dp),
-            decoder = BinaryDecoder(secondFirst)
+            modifier = Modifier
+                .weight(1f)
+                .padding(4.dp),
+            decoder = BinaryDecoder(secondFirst),
+            segmentStyle = SegmentStyle.DIFFUSER
         )
         SegmentDisplay(
-            modifier = Modifier.weight(1f).padding(4.dp),
-            decoder = BinaryDecoder(secondSecond)
+            modifier = Modifier
+                .weight(1f)
+                .padding(4.dp),
+            decoder = BinaryDecoder(secondSecond),
+            segmentStyle = SegmentStyle.DIFFUSER
         )
     }
 }
 
 private val defaultLed = SingleColorLed(Color.Red, Color.DarkGray.copy(alpha = 0.3f))
+
+private const val diffuserFactor = 0.4f
+
+private fun Color.toLedBrush(offset: Offset) = Brush.radialGradient(
+    colors = listOf(
+        this, copy(
+            red = red * diffuserFactor,
+            green = green * diffuserFactor,
+            blue = blue * diffuserFactor
+        )
+    ),
+    center = offset
+)
