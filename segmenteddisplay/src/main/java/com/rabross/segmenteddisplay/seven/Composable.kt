@@ -7,28 +7,27 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.rabross.segmenteddisplay.delimiter.BinaryDecoder as DelimiterBinaryDecoder
 import com.rabross.segmenteddisplay.Led
 import com.rabross.segmenteddisplay.SingleColorLed
 import com.rabross.segmenteddisplay.delimiter.Delimiter
+import com.rabross.segmenteddisplay.delimiter.BinaryDecoder as DelimiterBinaryDecoder
 
 @Preview
 @Composable
 fun SegmentDisplayPreview() {
-    Surface {
-        SegmentDisplay()
+    Surface(color = Color.Black) {
+        SegmentDisplay(decoder = BinaryDecoder(BinaryDecoder.mapToDisplay(3)))
     }
 }
 
 @Preview
 @Composable
 fun DigitalClockPreview() {
-    Surface {
+    Surface(color = Color.Black) {
         DigitalClock()
     }
 }
@@ -91,7 +90,8 @@ private fun DrawScope.drawHorizontalSegment(color: Color, offset: Offset, size: 
         lineTo(centerX + size.width/2 + radius - spacing, centerY)
         lineTo(centerX + size.width/2, centerY + radius - spacing)
     }
-    drawPath(hexagonPath, color)
+    drawPath(hexagonPath, color.toLedBrush(Offset(centerX, centerY)))
+//    drawPath(hexagonPath, color)
 }
 
 private fun DrawScope.drawVerticalSegment(color: Color, offset: Offset, size: Size, spacingRatio: Float) {
@@ -107,8 +107,20 @@ private fun DrawScope.drawVerticalSegment(color: Color, offset: Offset, size: Si
         lineTo(centerX + radius - spacing, centerY - size.height/2)
         lineTo(centerX + radius - spacing, centerY + size.height/2)
     }
-    drawPath(hexagonPath, color)
+    drawPath(hexagonPath, color.toLedBrush(Offset(centerX, centerY)))
+//    drawPath(hexagonPath, color)
 }
+
+private fun Color.toLedBrush(offset: Offset) = Brush.radialGradient(
+    colors = listOf(
+        this, copy(
+            red = red * 0.3f,
+            green = green * 0.3f,
+            blue = blue * 0.3f
+        )
+    ),
+    center = offset
+)
 
 @Composable
 fun DigitalClock(
