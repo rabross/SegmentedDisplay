@@ -3,24 +3,22 @@
     package="com.rabross.segmenteddisplay.app">
 
     <application
-        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
-        <activity
-            android:name=".SevenSegmentActivity"
-            android:exported="true">
+        <activity android:name=".SampleIndexActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TypingActivity" android:exported="true" />
-        <activity android:name=".FourteenSegmentActivity" android:exported="true" />
-        <activity android:name=".SevenSegmentHeartActivity" android:exported="true" />
+        <activity android:name=".SevenSegmentActivity" android:exported="false" />
+        <activity android:name=".TypingActivity" android:exported="false" />
+        <activity android:name=".FourteenSegmentActivity" android:exported="false" />
+        <activity android:name=".SevenSegmentHeartActivity" android:exported="false" />
     </application>
 
 </manifest>

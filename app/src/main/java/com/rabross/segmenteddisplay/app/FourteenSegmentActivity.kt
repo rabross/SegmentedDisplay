@@ -24,13 +24,12 @@ import java.util.*
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 
-@ExperimentalTime
+@OptIn(ExperimentalTime::class)
 class FourteenSegmentActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-
             val hourFirst = remember { mutableStateOf(0) }
             val hourSecond = remember { mutableStateOf(0) }
             val minuteFirst = remember { mutableStateOf(0) }

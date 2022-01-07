@@ -16,9 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.rabross.segmenteddisplay.fourteen.BinaryDecoder
 import com.rabross.segmenteddisplay.fourteen.SegmentDisplay
-import kotlin.time.ExperimentalTime
 
-@ExperimentalTime
 class TypingActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

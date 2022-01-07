@@ -12,16 +12,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.rabross.segmenteddisplay.seven.BinaryDecoder
 import com.rabross.segmenteddisplay.seven.SegmentDisplay
-import kotlin.time.ExperimentalTime
 
-@ExperimentalTime
 class SevenSegmentHeartActivity : ComponentActivity() {
 
     private val rows = 6
     private val columns = 13
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         setContent {
 

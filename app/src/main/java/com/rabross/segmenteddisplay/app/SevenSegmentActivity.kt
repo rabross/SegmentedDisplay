@@ -24,7 +24,7 @@ import java.util.*
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 
-@ExperimentalTime
+@OptIn(ExperimentalTime::class)
 class SevenSegmentActivity : ComponentActivity() {
 
     private val redLed = SingleColorLed(Color.Red, Color.Black)
@@ -55,7 +55,7 @@ class SevenSegmentActivity : ComponentActivity() {
                         BinaryDecoder.mapToDisplay(minuteSecond.value),
                         BinaryDecoder.mapToDisplay(secondFirst.value),
                         BinaryDecoder.mapToDisplay(secondSecond.value),
-                        3
+                        delimiterSignal = 0b11
                     )
                     Row(
                         Modifier
