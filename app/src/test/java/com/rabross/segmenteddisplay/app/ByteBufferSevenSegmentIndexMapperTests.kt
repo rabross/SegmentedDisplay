@@ -18,7 +18,7 @@ internal class ByteBufferSevenSegmentIndexMapperTests {
     @Test
     internal fun `Minimum - Segment A`() {
         val segmentAIndex = 0
-        val bufferIndex = mapSingleSegmentToBufferIndex(
+        val bufferIndex = mapSingleSegmentToALPHA8BufferIndex(
                 minBufferWidth,
                 minBufferHeight,
                 minSevenSegmentCountX,
@@ -32,7 +32,7 @@ internal class ByteBufferSevenSegmentIndexMapperTests {
     @Test
     internal fun `Minimum - Segment B`() {
         val segmentBIndex = 1
-        val bufferIndex = mapSingleSegmentToBufferIndex(
+        val bufferIndex = mapSingleSegmentToALPHA8BufferIndex(
                 minBufferWidth,
                 minBufferHeight,
                 minSevenSegmentCountX,
@@ -46,7 +46,7 @@ internal class ByteBufferSevenSegmentIndexMapperTests {
     @Test
     internal fun `Minimum - Segment C`() {
         val segmentCIndex = 2
-        val bufferIndex = mapSingleSegmentToBufferIndex(
+        val bufferIndex = mapSingleSegmentToALPHA8BufferIndex(
                 minBufferWidth,
                 minBufferHeight,
                 minSevenSegmentCountX,
@@ -60,7 +60,7 @@ internal class ByteBufferSevenSegmentIndexMapperTests {
     @Test
     internal fun `Minimum - Segment D`() {
         val segmentDIndex = 3
-        val bufferIndex = mapSingleSegmentToBufferIndex(
+        val bufferIndex = mapSingleSegmentToALPHA8BufferIndex(
                 minBufferWidth,
                 minBufferHeight,
                 minSevenSegmentCountX,
@@ -74,7 +74,7 @@ internal class ByteBufferSevenSegmentIndexMapperTests {
     @Test
     internal fun `Minimum - Segment E`() {
         val segmentEIndex = 4
-        val bufferIndex = mapSingleSegmentToBufferIndex(
+        val bufferIndex = mapSingleSegmentToALPHA8BufferIndex(
                 minBufferWidth,
                 minBufferHeight,
                 minSevenSegmentCountX,
@@ -88,7 +88,7 @@ internal class ByteBufferSevenSegmentIndexMapperTests {
     @Test
     internal fun `Minimum - Segment F`() {
         val segmentFIndex = 5
-        val bufferIndex = mapSingleSegmentToBufferIndex(
+        val bufferIndex = mapSingleSegmentToALPHA8BufferIndex(
                 minBufferWidth,
                 minBufferHeight,
                 minSevenSegmentCountX,
@@ -102,7 +102,7 @@ internal class ByteBufferSevenSegmentIndexMapperTests {
     @Test
     internal fun `Minimum - Segment G`() {
         val segmentGIndex = 6
-        val bufferIndex = mapSingleSegmentToBufferIndex(
+        val bufferIndex = mapSingleSegmentToALPHA8BufferIndex(
                 minBufferWidth,
                 minBufferHeight,
                 minSevenSegmentCountX,
@@ -121,7 +121,7 @@ internal class ByteBufferSevenSegmentIndexMapperTests {
         val bufferHeight = 5 * sevenSegmentCountY
         val sevenSegmentIndex = 0
         val segmentIndex = 0
-        val bufferIndex = mapSingleSegmentToBufferIndex(
+        val bufferIndex = mapSingleSegmentToALPHA8BufferIndex(
             bufferWidth,
             bufferHeight,
             sevenSegmentCountX,
@@ -140,7 +140,7 @@ internal class ByteBufferSevenSegmentIndexMapperTests {
         val bufferHeight = 5 * sevenSegmentCountY
         val sevenSegmentIndex = 1
         val segmentIndex = 0
-        val bufferIndex = mapSingleSegmentToBufferIndex(
+        val bufferIndex = mapSingleSegmentToALPHA8BufferIndex(
             bufferWidth,
             bufferHeight,
             sevenSegmentCountX,
@@ -159,7 +159,7 @@ internal class ByteBufferSevenSegmentIndexMapperTests {
         val bufferHeight = 5 * sevenSegmentCountY
         val sevenSegmentIndex = 2
         val segmentIndex = 0
-        val bufferIndex = mapSingleSegmentToBufferIndex(
+        val bufferIndex = mapSingleSegmentToALPHA8BufferIndex(
             bufferWidth,
             bufferHeight,
             sevenSegmentCountX,
@@ -178,7 +178,7 @@ internal class ByteBufferSevenSegmentIndexMapperTests {
         val bufferHeight = 5 * sevenSegmentCountY
         val sevenSegmentIndex = 3
         val segmentIndex = 0
-        val bufferIndex = mapSingleSegmentToBufferIndex(
+        val bufferIndex = mapSingleSegmentToALPHA8BufferIndex(
             bufferWidth,
             bufferHeight,
             sevenSegmentCountX,
@@ -197,7 +197,7 @@ internal class ByteBufferSevenSegmentIndexMapperTests {
         val bufferHeight = 5 * sevenSegmentCountY
         val sevenSegmentIndex = 0
         val segmentIndex = 1
-        val bufferIndex = mapSingleSegmentToBufferIndex(
+        val bufferIndex = mapSingleSegmentToALPHA8BufferIndex(
             bufferWidth,
             bufferHeight,
             sevenSegmentCountX,
@@ -216,7 +216,7 @@ internal class ByteBufferSevenSegmentIndexMapperTests {
         val bufferHeight = 5 * sevenSegmentCountY
         val sevenSegmentIndex = 1
         val segmentIndex = 1
-        val bufferIndex = mapSingleSegmentToBufferIndex(
+        val bufferIndex = mapSingleSegmentToALPHA8BufferIndex(
             bufferWidth,
             bufferHeight,
             sevenSegmentCountX,
@@ -235,7 +235,7 @@ internal class ByteBufferSevenSegmentIndexMapperTests {
         val bufferHeight = 5 * sevenSegmentCountY
         val sevenSegmentIndex = 2
         val segmentIndex = 1
-        val bufferIndex = mapSingleSegmentToBufferIndex(
+        val bufferIndex = mapSingleSegmentToALPHA8BufferIndex(
             bufferWidth,
             bufferHeight,
             sevenSegmentCountX,
@@ -254,7 +254,7 @@ internal class ByteBufferSevenSegmentIndexMapperTests {
         val bufferHeight = 5 * sevenSegmentCountY
         val sevenSegmentIndex = 3
         val segmentIndex = 1
-        val bufferIndex = mapSingleSegmentToBufferIndex(
+        val bufferIndex = mapSingleSegmentToALPHA8BufferIndex(
             bufferWidth,
             bufferHeight,
             sevenSegmentCountX,
@@ -273,7 +273,7 @@ internal class ByteBufferSevenSegmentIndexMapperTests {
         val bufferHeight = 5 * sevenSegmentCountY
         val sevenSegmentIndex = 3
         val segmentIndex = 0
-        val bufferIndex = mapSingleSegmentToBufferIndex(
+        val bufferIndex = mapSingleSegmentToALPHA8BufferIndex(
             bufferWidth,
             bufferHeight,
             sevenSegmentCountX,
@@ -286,16 +286,16 @@ internal class ByteBufferSevenSegmentIndexMapperTests {
 
     @Test(expected = InvalidParameterException::class)
     internal fun `Invalid buffer format throws error`() {
-        mapSingleSegmentToBufferIndex(3,5,1,1,0,0)
+        mapSingleSegmentToALPHA8BufferIndex(3,5,1,1,0,0)
     }
 
     @Test(expected = InvalidParameterException::class)
     internal fun `Invalid buffer width throws error`() {
-        mapSingleSegmentToBufferIndex(2,5,2,1,0,0)
+        mapSingleSegmentToALPHA8BufferIndex(2,5,2,1,0,0)
     }
 
     @Test(expected = InvalidParameterException::class)
     internal fun `Invalid buffer height throws error`() {
-        mapSingleSegmentToBufferIndex(2,5,1,2,0,0)
+        mapSingleSegmentToALPHA8BufferIndex(2,5,1,2,0,0)
     }
 }
