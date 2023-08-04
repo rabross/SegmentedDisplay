@@ -6,12 +6,12 @@ import android.graphics.Canvas
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.scale
 import com.rabross.segmenteddisplay.seven.Decoder
@@ -40,6 +40,14 @@ class SevenSegmentScreenActivity : ComponentActivity() {
         setContent {
             Surface(modifier = Modifier.fillMaxSize(), color = ComposeColor.Black) {
                 Column(modifier = Modifier.padding(24.dp)) {
+                    Image(
+                        modifier = Modifier
+                            .background(color = ComposeColor.White)
+                            .fillMaxWidth()
+                            .aspectRatio(bufferWidth / bufferHeight.toFloat()),
+                        painter = painterResource(id = R.drawable.bitmap),
+                        contentDescription = "test")
+                    Spacer(modifier = Modifier.height(24.dp))
                     for (row in 0 until rows) {
                         Row {
                             for (column in 0 until columns) {
@@ -48,7 +56,8 @@ class SevenSegmentScreenActivity : ComponentActivity() {
                                     modifier = Modifier
                                         .weight(1f)
                                         .padding(2.dp),
-                                    decoder = BufferDecoder(screenBuffer, bufferWidth, bufferHeight, columns, rows, sevenSegmentIndex)
+                                    decoder = BufferDecoder(screenBuffer, bufferWidth, bufferHeight, columns, rows, sevenSegmentIndex),
+                                    led = { value -> ComposeColor(red = value, green = 0, blue = 0, alpha = 0xFF) }
                                 )
                             }
                         }
@@ -68,13 +77,13 @@ class BufferDecoder(
     sevenSegmentIndex: Int
 ) : Decoder {
 
-    override val a = buffer.get(mapSingleSegmentToBufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex, 0)).toInt() and 0b00000001
-    override val b = buffer.get(mapSingleSegmentToBufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex, 1)).toInt() and 0b00000010
-    override val c = buffer.get(mapSingleSegmentToBufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex, 2)).toInt() and 0b00000100
-    override val d = buffer.get(mapSingleSegmentToBufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex, 3)).toInt() and 0b00001000
-    override val e = buffer.get(mapSingleSegmentToBufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex, 4)).toInt() and 0b00010000
-    override val f = buffer.get(mapSingleSegmentToBufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex, 5)).toInt() and 0b00100000
-    override val g = buffer.get(mapSingleSegmentToBufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex, 6)).toInt() and 0b01000000
+    override val a = buffer.get(mapSingleSegmentToBufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex, 0)).toInt()
+    override val b = buffer.get(mapSingleSegmentToBufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex, 1)).toInt()
+    override val c = buffer.get(mapSingleSegmentToBufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex, 2)).toInt()
+    override val d = buffer.get(mapSingleSegmentToBufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex, 3)).toInt()
+    override val e = buffer.get(mapSingleSegmentToBufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex, 4)).toInt()
+    override val f = buffer.get(mapSingleSegmentToBufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex, 5)).toInt()
+    override val g = buffer.get(mapSingleSegmentToBufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex, 6)).toInt()
 
 }
 
