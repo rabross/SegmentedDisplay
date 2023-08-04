@@ -14,14 +14,12 @@ import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.scale
-import com.rabross.segmenteddisplay.seven.SevenSegmentDecoder
-import com.rabross.segmenteddisplay.seven.SevenSegmentDisplay
+import com.rabross.segmenteddisplay.seven.Decoder
+import com.rabross.segmenteddisplay.seven.SegmentDisplay
 import java.nio.ByteBuffer
 import java.security.InvalidParameterException
-import kotlin.time.ExperimentalTime
 import androidx.compose.ui.graphics.Color as ComposeColor
 
-@ExperimentalTime
 class SevenSegmentScreenActivity : ComponentActivity() {
 
     private val columns = 20
@@ -46,7 +44,7 @@ class SevenSegmentScreenActivity : ComponentActivity() {
                         Row {
                             for (column in 0 until columns) {
                                 val sevenSegmentIndex = (row * columns) + column
-                                SevenSegmentDisplay(
+                                SegmentDisplay(
                                     modifier = Modifier
                                         .weight(1f)
                                         .padding(2.dp),
@@ -68,7 +66,7 @@ class BufferDecoder(
     sevenSegmentCountX: Int,
     sevenSegmentCountY: Int,
     sevenSegmentIndex: Int
-) : SevenSegmentDecoder {
+) : Decoder {
 
     override val a = buffer.get(mapSingleSegmentToBufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex, 0)).toInt() and 0b00000001
     override val b = buffer.get(mapSingleSegmentToBufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex, 1)).toInt() and 0b00000010
