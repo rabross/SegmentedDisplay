@@ -19,6 +19,7 @@
         <activity android:name=".TypingActivity" android:exported="false" />
         <activity android:name=".FourteenSegmentActivity" android:exported="false" />
         <activity android:name=".SevenSegmentHeartActivity" android:exported="false" />
+        <activity android:name=".SevenSegmentScreenActivity" android:exported="true" />
     </application>
 
 </manifest>
