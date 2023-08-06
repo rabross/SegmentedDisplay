@@ -23,9 +23,9 @@ import androidx.compose.ui.graphics.Color as ComposeColor
 class SevenSegmentScreenActivity : ComponentActivity() {
 
     private val columns = 20
-    private val rows = 6
+    private val rows = 9
     private val bufferWidth = 40
-    private val bufferHeight = 30
+    private val bufferHeight = 45
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,8 +35,7 @@ class SevenSegmentScreenActivity : ComponentActivity() {
             BitmapFactory.decodeResource(resources, R.drawable.color_bitmap)
                 .scale(bufferWidth, bufferHeight), 0f, 0f, null
         )
-        bitmap.isPremultiplied = true
-            bitmap.copyPixelsToBuffer(screenBuffer)
+        bitmap.copyPixelsToBuffer(screenBuffer)
 
         setContent {
             Surface(modifier = Modifier.fillMaxSize(), color = ComposeColor.Black) {
