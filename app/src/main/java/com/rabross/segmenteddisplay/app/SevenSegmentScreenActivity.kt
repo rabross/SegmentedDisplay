@@ -22,20 +22,23 @@ import androidx.compose.ui.graphics.Color as ComposeColor
 
 class SevenSegmentScreenActivity : ComponentActivity() {
 
-    private val columns = 20
-    private val rows = 9
-    private val bufferWidth = 40
-    private val bufferHeight = 45
+    private val columns = 25
+    private val rows = 10
+    private val bufferWidth = columns * 2
+    private val bufferHeight = rows * 5
+    private val imageResource = R.drawable.color_bitmap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val bitmap = Bitmap.createBitmap(bufferWidth, bufferHeight, Bitmap.Config.ARGB_8888)
+            .also { Canvas(it).drawBitmap(
+                    BitmapFactory.decodeResource(resources, imageResource)
+                        .scale(bufferWidth, bufferHeight), 0f, 0f, null
+                )
+            }
+
         val screenBuffer = ByteBuffer.allocate(bitmap.allocationByteCount)
-        Canvas(bitmap).drawBitmap(
-            BitmapFactory.decodeResource(resources, R.drawable.color_bitmap)
-                .scale(bufferWidth, bufferHeight), 0f, 0f, null
-        )
-        bitmap.copyPixelsToBuffer(screenBuffer)
+            .also { bitmap.copyPixelsToBuffer(it) }
 
         setContent {
             Surface(modifier = Modifier.fillMaxSize(), color = ComposeColor.Black) {
@@ -43,10 +46,9 @@ class SevenSegmentScreenActivity : ComponentActivity() {
                     Image(
                         modifier = Modifier
                             .background(color = ComposeColor.White)
-                            .fillMaxWidth()
-                            .aspectRatio(bufferWidth / bufferHeight.toFloat()),
-                        painter = painterResource(id = R.drawable.color_bitmap),
-                        contentDescription = "test")
+                            .fillMaxWidth(),
+                        painter = painterResource(id = imageResource),
+                        contentDescription = "preview")
                     Spacer(modifier = Modifier.height(24.dp))
                     for (row in 0 until rows) {
                         Row {
@@ -69,57 +71,42 @@ class SevenSegmentScreenActivity : ComponentActivity() {
 }
 
 class Alpha8BufferDecoder(
-    buffer: ByteBuffer,
+    imageBuffer: ByteBuffer,
     bufferWidth: Int,
     bufferHeight: Int,
     sevenSegmentCountX: Int,
     sevenSegmentCountY: Int,
     sevenSegmentIndex: Int
 ) : Decoder {
-
-    override val a = buffer.get(mapSingleSegmentToALPHA8BufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex, 0)).toInt()
-    override val b = buffer.get(mapSingleSegmentToALPHA8BufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex, 1)).toInt()
-    override val c = buffer.get(mapSingleSegmentToALPHA8BufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex, 2)).toInt()
-    override val d = buffer.get(mapSingleSegmentToALPHA8BufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex, 3)).toInt()
-    override val e = buffer.get(mapSingleSegmentToALPHA8BufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex, 4)).toInt()
-    override val f = buffer.get(mapSingleSegmentToALPHA8BufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex, 5)).toInt()
-    override val g = buffer.get(mapSingleSegmentToALPHA8BufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex, 6)).toInt()
+    override val a = imageBuffer.get(0.toALPHA8BufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex)).toInt()
+    override val b = imageBuffer.get(1.toALPHA8BufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex)).toInt()
+    override val c = imageBuffer.get(2.toALPHA8BufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex)).toInt()
+    override val d = imageBuffer.get(3.toALPHA8BufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex)).toInt()
+    override val e = imageBuffer.get(4.toALPHA8BufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex)).toInt()
+    override val f = imageBuffer.get(5.toALPHA8BufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex)).toInt()
+    override val g = imageBuffer.get(6.toALPHA8BufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex)).toInt()
 }
 
 class ARGB8888BufferDecoder(
-    private val buffer: ByteBuffer,
-    private val bufferWidth: Int,
-    private val bufferHeight: Int,
-    private val sevenSegmentCountX: Int,
-    private val sevenSegmentCountY: Int,
-    private val sevenSegmentIndex: Int
+    imageBuffer: ByteBuffer,
+    bufferWidth: Int,
+    bufferHeight: Int,
+    sevenSegmentCountX: Int,
+    sevenSegmentCountY: Int,
+    sevenSegmentIndex: Int
 ) : Decoder {
-
-    override val a: Int
-        get() {
-            val index = mapSingleSegmentToARGB8888BufferIndex(
-                bufferWidth,
-                bufferHeight,
-                sevenSegmentCountX,
-                sevenSegmentCountY,
-                sevenSegmentIndex,
-                0
-            )
-            val value = (buffer.get(index+3).toInt() ushr 0) and 0xFF
-            println("index $index")
-            println("value ${Integer.toBinaryString(value)}")
-            return value
-        }
-    override val b = buffer.getInt(mapSingleSegmentToARGB8888BufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex, 1)).toARGB()
-    override val c = buffer.getInt(mapSingleSegmentToARGB8888BufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex, 2)).toARGB()
-    override val d = buffer.getInt(mapSingleSegmentToARGB8888BufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex, 3)).toARGB()
-    override val e = buffer.getInt(mapSingleSegmentToARGB8888BufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex, 4)).toARGB()
-    override val f = buffer.getInt(mapSingleSegmentToARGB8888BufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex, 5)).toARGB()
-    override val g = buffer.getInt(mapSingleSegmentToARGB8888BufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex, 6)).toARGB()
+    override val a = imageBuffer.getInt(0.toARGB8888BufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex)).toARGB()
+    override val b = imageBuffer.getInt(1.toARGB8888BufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex)).toARGB()
+    override val c = imageBuffer.getInt(2.toARGB8888BufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex)).toARGB()
+    override val d = imageBuffer.getInt(3.toARGB8888BufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex)).toARGB()
+    override val e = imageBuffer.getInt(4.toARGB8888BufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex)).toARGB()
+    override val f = imageBuffer.getInt(5.toARGB8888BufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex)).toARGB()
+    override val g = imageBuffer.getInt(6.toARGB8888BufferIndex(bufferWidth, bufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex)).toARGB()
 
     //Pixel data read from the image buffer us stored at RGBA and must be converted to ARGB
     private fun Int.toARGB(): Int {
-        return (this shl 24) or (this shr 8)    }
+        return (this shl 24) or (this shr 8)
+    }
 }
 
 /*
@@ -142,13 +129,12 @@ F = 5
 G = 6
  */
 
-internal fun mapSingleSegmentToALPHA8BufferIndex(
+internal fun Int.toALPHA8BufferIndex(
     imageBufferWidth: Int,
     imageBufferHeight: Int,
     sevenSegmentCountX: Int,
     sevenSegmentCountY: Int,
-    sevenSegmentIndex: Int,
-    segmentIndex: Int
+    sevenSegmentIndex: Int
 ): Int {
     val segmentWidth = 2
     val segmentHeight = 5
@@ -163,7 +149,7 @@ internal fun mapSingleSegmentToALPHA8BufferIndex(
     val imageOffsetX = segmentOffsetX * segmentWidth
     val imageOffsetY = segmentOffsetY * segmentHeight
 
-    val imageCoordinate = when(segmentIndex) {
+    val imageCoordinate = when(this) {
         /*A*/ 0 -> imageOffsetX to imageOffsetY
         /*B*/ 1 -> imageOffsetX + 1 to imageOffsetY + 1
         /*C*/ 2 -> imageOffsetX + 1 to imageOffsetY + 3
@@ -177,37 +163,12 @@ internal fun mapSingleSegmentToALPHA8BufferIndex(
     return imageCoordinate.second * imageBufferWidth + imageCoordinate.first
 }
 
-internal fun mapSingleSegmentToARGB8888BufferIndex(
+internal fun Int.toARGB8888BufferIndex(
     imageBufferWidth: Int,
     imageBufferHeight: Int,
     sevenSegmentCountX: Int,
     sevenSegmentCountY: Int,
-    sevenSegmentIndex: Int,
-    segmentIndex: Int
+    sevenSegmentIndex: Int
 ): Int {
-    val segmentWidth = 2
-    val segmentHeight = 5
-
-    if(imageBufferWidth % segmentWidth > 0 || imageBufferHeight % segmentHeight > 0) throw InvalidParameterException("Image buffer must be divisible by 7-segment size 2x5")
-    if(imageBufferWidth < sevenSegmentCountX * segmentWidth) throw InvalidParameterException("Image buffer width must be large enough to support given 7-segment grid width")
-    if(imageBufferHeight < sevenSegmentCountY * segmentHeight) throw InvalidParameterException("Image buffer height must be large enough to support given 7-segment grid height")
-
-    val segmentOffsetX = sevenSegmentIndex % sevenSegmentCountX
-    val segmentOffsetY = sevenSegmentIndex / sevenSegmentCountX
-
-    val imageOffsetX = segmentOffsetX * segmentWidth
-    val imageOffsetY = segmentOffsetY * segmentHeight
-
-    val imageCoordinate = when(segmentIndex) {
-        /*A*/ 0 -> imageOffsetX to imageOffsetY
-        /*B*/ 1 -> imageOffsetX + 1 to imageOffsetY + 1
-        /*C*/ 2 -> imageOffsetX + 1 to imageOffsetY + 3
-        /*D*/ 3 -> imageOffsetX to imageOffsetY + 4
-        /*E*/ 4 -> imageOffsetX to imageOffsetY + 3
-        /*F*/ 5 -> imageOffsetX to imageOffsetY + 1
-        /*G*/ 6 -> imageOffsetX to imageOffsetY + 2
-        else -> 0 to 0
-    }
-
-    return (imageCoordinate.second * imageBufferWidth + imageCoordinate.first) * 4
+    return toALPHA8BufferIndex(imageBufferWidth, imageBufferHeight, sevenSegmentCountX, sevenSegmentCountY, sevenSegmentIndex) * 4 //bytes
 }
