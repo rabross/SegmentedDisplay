@@ -8,7 +8,7 @@ A 7-segment and 14-segment display for Android build with Jetpack Compose
 <img width="512" src="https://user-images.githubusercontent.com/3681815/134777713-e61c2a27-1346-4591-9e34-2b76058607c4.png">
 <img width="512" src="https://user-images.githubusercontent.com/3681815/134990891-a847ef53-9fe1-477e-bfe5-2774172e8455.png">
 
-Inspired by [limpfish](https://www.plingboot.com/2017/02/oldskool-demo-on-a-7-segment-display/)
+Inspired by [limpfish](https://www.plingboot.com/oldskool-demo-on-a-7-segment-display/)
 
 ## Customizable
 Highly customisable.
