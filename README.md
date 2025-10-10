@@ -2,7 +2,7 @@
 ![GitHub](https://img.shields.io/github/license/rabross/SegmentedDisplay.svg)
 
 # SegmentedDisplay
-A 7-segment and 14-segment display for Android build with Jetpack Compose
+A 7-segment and 14-segment display for Android built with Jetpack Compose
 
 <img width="512" src="https://user-images.githubusercontent.com/3681815/168902536-89114f4d-8545-46a5-9ea4-89cde58c7cb9.png">
 <img width="512" src="https://user-images.githubusercontent.com/3681815/134777713-e61c2a27-1346-4591-9e34-2b76058607c4.png">
