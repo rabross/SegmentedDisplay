@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
@@ -60,80 +62,105 @@ fun SegmentDisplay(
     segmentStyle: SegmentStyle = SegmentStyle.FLAT,
     decoder: Decoder = BinaryDecoder()
 ) {
+    val spacingRatioLimited = remember(spacingRatio) { spacingRatio.coerceIn(0f..0.9f) }
+
     Canvas(modifier = modifier
         .aspectRatio((1f + segmentScale + 1f) / (1f + segmentScale + 1f + segmentScale + 1f), true)
-        .size(100.dp)) {
+        .size(100.dp)
+        .drawWithCache {
+            val scaleWidth = 1 + segmentScale + 1
+            val scaleHeight = 1 + segmentScale + 1 + segmentScale + 1
 
-        val scaleWidth = 1 + segmentScale + 1
-        val scaleHeight = 1 + segmentScale + 1 + segmentScale + 1
+            val segmentWidthByWidth = size.width / scaleWidth
+            val segmentWidthByHeight = size.height / scaleHeight
 
-        val segmentWidthByWidth = size.width / scaleWidth
-        val segmentWidthByHeight = size.height / scaleHeight
+            val segmentWidth = if (scaleHeight * segmentWidthByWidth < size.height) segmentWidthByWidth else segmentWidthByHeight
+            val segmentLength = segmentScale * segmentWidth
 
-        val segmentWidth = if (scaleHeight * segmentWidthByWidth < size.height) segmentWidthByWidth else segmentWidthByHeight
-        val segmentLength = segmentScale * segmentWidth
+            val horizontalSegmentSize = Size(segmentLength, segmentWidth)
+            val verticalSegmentSize = Size(segmentWidth, segmentLength)
 
-        val horizontalSegmentSize = Size(segmentLength, segmentWidth)
-        val verticalSegmentSize = Size(segmentWidth, segmentLength)
+            val aOffset = Offset(segmentWidth, 0f)
+            val bOffset = Offset(segmentLength + segmentWidth, segmentWidth)
+            val cOffset = Offset(segmentLength + segmentWidth, segmentLength + segmentWidth + segmentWidth)
+            val dOffset = Offset(segmentWidth, segmentLength + segmentWidth + segmentLength + segmentWidth)
+            val eOffset = Offset(0f, segmentLength + segmentWidth + segmentWidth)
+            val fOffset = Offset(0f, segmentWidth)
+            val gOffset = Offset(segmentWidth, segmentLength + segmentWidth)
 
-        val aOffset = Offset(segmentWidth, 0f)
-        val bOffset = Offset(segmentLength + segmentWidth, segmentWidth)
-        val cOffset = Offset(segmentLength + segmentWidth, segmentLength + segmentWidth + segmentWidth)
-        val dOffset = Offset(segmentWidth, segmentLength + segmentWidth + segmentLength + segmentWidth)
-        val eOffset = Offset(0f, segmentLength + segmentWidth + segmentWidth)
-        val fOffset = Offset(0f, segmentWidth)
-        val gOffset = Offset(segmentWidth, segmentLength + segmentWidth)
+            val aPath = createHorizontalSegmentPath(aOffset, horizontalSegmentSize, spacingRatioLimited)
+            val bPath = createVerticalSegmentPath(bOffset, verticalSegmentSize, spacingRatioLimited)
+            val cPath = createVerticalSegmentPath(cOffset, verticalSegmentSize, spacingRatioLimited)
+            val dPath = createHorizontalSegmentPath(dOffset, horizontalSegmentSize, spacingRatioLimited)
+            val ePath = createVerticalSegmentPath(eOffset, verticalSegmentSize, spacingRatioLimited)
+            val fPath = createVerticalSegmentPath(fOffset, verticalSegmentSize, spacingRatioLimited)
+            val gPath = createHorizontalSegmentPath(gOffset, horizontalSegmentSize, spacingRatioLimited)
 
-        val spacingRatioLimited = spacingRatio.coerceIn(0f..0.9f)
-
-        drawHorizontalSegment(led.signal(decoder.a), segmentStyle, aOffset, horizontalSegmentSize, spacingRatioLimited)
-        drawVerticalSegment(led.signal(decoder.b), segmentStyle, bOffset, verticalSegmentSize, spacingRatioLimited)
-        drawVerticalSegment(led.signal(decoder.c), segmentStyle, cOffset, verticalSegmentSize, spacingRatioLimited)
-        drawHorizontalSegment(led.signal(decoder.d), segmentStyle, dOffset, horizontalSegmentSize, spacingRatioLimited)
-        drawVerticalSegment(led.signal(decoder.e), segmentStyle, eOffset, verticalSegmentSize, spacingRatioLimited)
-        drawVerticalSegment(led.signal(decoder.f), segmentStyle, fOffset, verticalSegmentSize, spacingRatioLimited)
-        drawHorizontalSegment(led.signal(decoder.g), segmentStyle, gOffset, horizontalSegmentSize, spacingRatioLimited)
-    }
+            onDrawBehind {
+                drawSegment(led.signal(decoder.a), segmentStyle, aPath)
+                drawSegment(led.signal(decoder.b), segmentStyle, bPath)
+                drawSegment(led.signal(decoder.c), segmentStyle, cPath)
+                drawSegment(led.signal(decoder.d), segmentStyle, dPath)
+                drawSegment(led.signal(decoder.e), segmentStyle, ePath)
+                drawSegment(led.signal(decoder.f), segmentStyle, fPath)
+                drawSegment(led.signal(decoder.g), segmentStyle, gPath)
+            }
+        }
+    ) {}
 }
 
-private fun DrawScope.drawHorizontalSegment(color: Color, segmentStyle: SegmentStyle, offset: Offset, size: Size, spacingRatio: Float) {
+private fun createHorizontalSegmentPath(offset: Offset, size: Size, spacingRatio: Float): Path {
     val radius = size.minDimension / 2
     val centerX: Float = offset.x + size.width / 2
     val centerY: Float = offset.y + size.height / 2
     val spacing = radius * spacingRatio
-    val hexagonPath = Path().apply {
+    return Path().apply {
         moveTo(centerX, centerY + radius - spacing)
-        lineTo(centerX - size.width/2, centerY + radius - spacing)
-        lineTo(centerX - size.width/2 - radius + spacing, centerY)
-        lineTo(centerX - size.width/2, centerY - radius + spacing)
-        lineTo(centerX + size.width/2, centerY - radius + spacing)
-        lineTo(centerX + size.width/2 + radius - spacing, centerY)
-        lineTo(centerX + size.width/2, centerY + radius - spacing)
-    }
-    when(segmentStyle) {
-        SegmentStyle.FLAT -> drawPath(hexagonPath, color)
-        SegmentStyle.DIFFUSER -> drawPath(hexagonPath, color.toLedBrush(Offset(centerX, centerY)))
+        lineTo(centerX - size.width / 2, centerY + radius - spacing)
+        lineTo(centerX - size.width / 2 - radius + spacing, centerY)
+        lineTo(centerX - size.width / 2, centerY - radius + spacing)
+        lineTo(centerX + size.width / 2, centerY - radius + spacing)
+        lineTo(centerX + size.width / 2 + radius - spacing, centerY)
+        lineTo(centerX + size.width / 2, centerY + radius - spacing)
+        close()
     }
 }
 
-private fun DrawScope.drawVerticalSegment(color: Color, segmentStyle: SegmentStyle, offset: Offset, size: Size, spacingRatio: Float) {
+private fun createVerticalSegmentPath(offset: Offset, size: Size, spacingRatio: Float): Path {
     val radius = size.minDimension / 2
     val centerX: Float = offset.x + size.width / 2
     val centerY: Float = offset.y + size.height / 2
     val spacing = radius * spacingRatio
-    val hexagonPath = Path().apply {
-        moveTo(centerX, centerY + radius + size.height/2 - spacing)
-        lineTo(centerX - radius + spacing, centerY + size.height/2)
-        lineTo(centerX - radius + spacing, centerY - size.height/2)
-        lineTo(centerX, centerY - radius - size.height/2 + spacing)
-        lineTo(centerX + radius - spacing, centerY - size.height/2)
-        lineTo(centerX + radius - spacing, centerY + size.height/2)
-    }
-    when(segmentStyle) {
-        SegmentStyle.FLAT -> drawPath(hexagonPath, color)
-        SegmentStyle.DIFFUSER -> drawPath(hexagonPath, color.toLedBrush(Offset(centerX, centerY)))
+    return Path().apply {
+        moveTo(centerX, centerY + radius + size.height / 2 - spacing)
+        lineTo(centerX - radius + spacing, centerY + size.height / 2)
+        lineTo(centerX - radius + spacing, centerY - size.height / 2)
+        lineTo(centerX, centerY - radius - size.height / 2 + spacing)
+        lineTo(centerX + radius - spacing, centerY - size.height / 2)
+        lineTo(centerX + radius - spacing, centerY + size.height / 2)
+        close()
     }
 }
+
+private fun DrawScope.drawSegment(
+    color: Color,
+    segmentStyle: SegmentStyle,
+    path: Path
+) {
+    val finalBrush = if (segmentStyle == SegmentStyle.FLAT) {
+        null
+    } else {
+        val bounds = path.getBounds()
+        color.toLedBrush(bounds.center)
+    }
+
+    if (finalBrush != null) {
+        drawPath(path, finalBrush)
+    } else {
+        drawPath(path, color)
+    }
+}
+
 
 @Composable
 fun DigitalClock(
@@ -147,72 +174,64 @@ fun DigitalClock(
     delimiterSignal: Int = 0
 ) {
     Row(modifier = modifier) {
+        val digitModifier = Modifier
+            .weight(1f)
+            .padding(4.dp)
+
         SegmentDisplay(
-            modifier = Modifier
-                .weight(1f)
-                .padding(4.dp),
+            modifier = digitModifier,
             decoder = BinaryDecoder(hourFirst),
             segmentStyle = SegmentStyle.DIFFUSER
         )
         SegmentDisplay(
-            modifier = Modifier
-                .weight(1f)
-                .padding(4.dp),
+            modifier = digitModifier,
             decoder = BinaryDecoder(hourSecond),
             segmentStyle = SegmentStyle.DIFFUSER
         )
-        Delimiter(modifier = Modifier
-            .weight(1f)
-            .padding(4.dp),
+        Delimiter(
+            modifier = digitModifier,
             decoder = DelimiterBinaryDecoder(delimiterSignal)
         )
         SegmentDisplay(
-            modifier = Modifier
-                .weight(1f)
-                .padding(4.dp),
+            modifier = digitModifier,
             decoder = BinaryDecoder(minuteFirst),
             segmentStyle = SegmentStyle.DIFFUSER
         )
         SegmentDisplay(
-            modifier = Modifier
-                .weight(1f)
-                .padding(4.dp),
+            modifier = digitModifier,
             decoder = BinaryDecoder(minuteSecond),
             segmentStyle = SegmentStyle.DIFFUSER
         )
-        Delimiter(modifier = Modifier
-            .weight(1f)
-            .padding(4.dp),
+        Delimiter(
+            modifier = digitModifier,
             decoder = DelimiterBinaryDecoder(delimiterSignal)
         )
         SegmentDisplay(
-            modifier = Modifier
-                .weight(1f)
-                .padding(4.dp),
+            modifier = digitModifier,
             decoder = BinaryDecoder(secondFirst),
             segmentStyle = SegmentStyle.DIFFUSER
         )
         SegmentDisplay(
-            modifier = Modifier
-                .weight(1f)
-                .padding(4.dp),
+            modifier = digitModifier,
             decoder = BinaryDecoder(secondSecond),
             segmentStyle = SegmentStyle.DIFFUSER
         )
     }
 }
 
+
 private val defaultLed = SingleColorLed(Color.Red, Color.DarkGray.copy(alpha = 0.3f))
 
 private const val diffuserFactor = 0.4f
 
-private fun Color.toLedBrush(offset: Offset) = Brush.radialGradient(
-    colors = listOf(
-        this, copy(
-            red = red * diffuserFactor,
-            green = green * diffuserFactor,
-            blue = blue * diffuserFactor
-        )
-    ),
-    center = offset
+private fun Color.toLedBrush(center: Offset) = Brush.radialGradient(
+    colors = listOf(this, darker),
+    center = center
 )
+
+private val Color.darker
+    get() = copy(
+        red = red * diffuserFactor,
+        green = green * diffuserFactor,
+        blue = blue * diffuserFactor
+    )

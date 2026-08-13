@@ -1,14 +1,15 @@
 package com.rabross.segmenteddisplay.delimiter
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.rabross.segmenteddisplay.Led
@@ -33,31 +34,29 @@ fun Delimiter(
         modifier = modifier
             .aspectRatio(((1f + segmentScale + 1f)) / (1f + segmentScale + 1f + segmentScale + 1f), true)
             .size(100.dp)
-    ) {
-        val scaleWidth = 1 + segmentScale + 1
-        val scaleHeight = 1 + segmentScale + 1 + segmentScale + 1
+            .drawWithCache {
+                val scaleWidth = 1 + segmentScale + 1
+                val scaleHeight = 1 + segmentScale + 1 + segmentScale + 1
 
-        val segmentWidthByWidth = size.width / scaleWidth
-        val segmentWidthByHeight = size.height / scaleHeight
+                val segmentWidthByWidth = size.width / scaleWidth
+                val segmentWidthByHeight = size.height / scaleHeight
 
-        val segmentWidth = if (scaleHeight * segmentWidthByWidth < size.height) segmentWidthByWidth else segmentWidthByHeight
+                val segmentWidth = if (scaleHeight * segmentWidthByWidth < size.height) segmentWidthByWidth else segmentWidthByHeight
 
-        val totalWidth = segmentWidth * scaleWidth
-        val totalHeight = segmentWidth * scaleHeight
+                val totalWidth = segmentWidth * scaleWidth
+                val totalHeight = segmentWidth * scaleHeight
 
-        drawDelimiter(
-            led.signal(decoder.a),
-            led.signal(decoder.b),
-            segmentWidth / 2,
-            Offset(0f, segmentWidth / 2),
-            Size(totalWidth, totalHeight - segmentWidth)
-        )
-    }
-}
+                val radius = segmentWidth / 2
+                val offset = Offset(0f, segmentWidth / 2)
+                val drawingSize = Size(totalWidth, totalHeight - segmentWidth)
 
-private fun DrawScope.drawDelimiter(upDotColor: Color, downDotColor: Color, radius: Float, offset: Offset, size: Size) {
-    val upDotCenterOffset = Offset(size.width / 2 + offset.x, size.height / 4 + offset.y)
-    val downDotCenterOffset = Offset(size.width / 2 + offset.x, size.height / 4 * 3 + offset.y)
-    drawCircle(upDotColor, radius, upDotCenterOffset)
-    drawCircle(downDotColor, radius, downDotCenterOffset)
+                val upDotCenterOffset = Offset(drawingSize.width / 2 + offset.x, drawingSize.height / 4 + offset.y)
+                val downDotCenterOffset = Offset(drawingSize.width / 2 + offset.x, drawingSize.height / 4 * 3 + offset.y)
+
+                onDrawBehind {
+                    drawCircle(led.signal(decoder.a), radius, upDotCenterOffset)
+                    drawCircle(led.signal(decoder.b), radius, downDotCenterOffset)
+                }
+            }
+    ) {}
 }
