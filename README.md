@@ -17,7 +17,7 @@ Highly customisable.
 
 ## Dependency
 
-    implementation 'com.github.rabross:SegmentedDisplay:0.4.0'
+    implementation 'com.github.rabross:SegmentedDisplay:<LATEST>'
 
 Add the JitPack repository to your root `build.gradle` file
 
