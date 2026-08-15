@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.rabross.segmenteddisplay.Led
 import com.rabross.segmenteddisplay.SingleColorLed
 import com.rabross.segmenteddisplay.delimiter.Delimiter
+import com.rabross.segmenteddisplay.seven.BinaryDecoder.Companion.mapToDisplay
 import com.rabross.segmenteddisplay.delimiter.BinaryDecoder as DelimiterBinaryDecoder
 
 @Preview
@@ -49,7 +50,15 @@ fun DiffuserSegmentDisplayPreview() {
 @Composable
 fun DigitalClockPreview() {
     Surface(color = Color.Black) {
-        DigitalClock()
+        DigitalClock(
+            hourFirst = mapToDisplay(1),
+            hourSecond = mapToDisplay(2),
+            minuteFirst = mapToDisplay(3),
+            minuteSecond = mapToDisplay(4),
+            secondFirst = mapToDisplay(5),
+            secondSecond = mapToDisplay(6),
+            delimiterSignal = 3
+        )
     }
 }
 
