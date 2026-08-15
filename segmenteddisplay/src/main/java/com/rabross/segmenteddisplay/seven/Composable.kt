@@ -82,7 +82,8 @@ fun AlphabetPreview() {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     SegmentDisplay(
                         modifier = Modifier.padding(2.dp),
-                        decoder = BinaryDecoder(BinaryDecoder.mapToDisplay(char))
+                        decoder = BinaryDecoder(mapToDisplay(char)),
+                        segmentStyle = SegmentStyle.DIFFUSER
                     )
                 }
             }

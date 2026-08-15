@@ -12,13 +12,16 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.rabross.segmenteddisplay.delimiter.BinaryDecoder as DelimiterBinaryDecoder
@@ -26,14 +29,29 @@ import com.rabross.segmenteddisplay.Led
 import com.rabross.segmenteddisplay.SingleColorLed
 import com.rabross.segmenteddisplay.delimiter.Delimiter
 import com.rabross.segmenteddisplay.fourteen.BinaryDecoder.Companion.mapToDisplay
+import com.rabross.segmenteddisplay.seven.SegmentStyle
 import kotlin.math.pow
 import kotlin.math.sqrt
 
 @Preview
 @Composable
-fun FourteenSegmentDisplayPreview() {
-    Surface {
-        SegmentDisplay()
+fun FourteenFlatSegmentDisplayPreview() {
+    Surface(color = Color.Black) {
+        SegmentDisplay(
+            decoder = BinaryDecoder(mapToDisplay('A')),
+            segmentStyle = SegmentStyle.FLAT
+        )
+    }
+}
+
+@Preview
+@Composable
+fun FourteenDiffuserSegmentDisplayPreview() {
+    Surface(color = Color.Black) {
+        SegmentDisplay(
+            decoder = BinaryDecoder(mapToDisplay('A')),
+            segmentStyle = SegmentStyle.DIFFUSER
+        )
     }
 }
 
@@ -66,7 +84,8 @@ fun AlphabetPreview() {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     SegmentDisplay(
                         modifier = Modifier.padding(2.dp),
-                        decoder = BinaryDecoder(BinaryDecoder.mapToDisplay(char))
+                        decoder = BinaryDecoder(mapToDisplay(char)),
+                        segmentStyle = SegmentStyle.DIFFUSER
                     )
                 }
             }
@@ -83,7 +102,8 @@ fun DigitalClock(
     minuteSecond: Int = 0,
     secondFirst: Int = 0,
     secondSecond: Int = 0,
-    delimiterSignal: Int = 0
+    delimiterSignal: Int = 0,
+    segmentStyle: SegmentStyle = SegmentStyle.DIFFUSER
 ) {
     Row(modifier = modifier) {
         val digitModifier = Modifier
@@ -92,11 +112,13 @@ fun DigitalClock(
 
         SegmentDisplay(
             modifier = digitModifier,
-            decoder = BinaryDecoder(hourFirst)
+            decoder = BinaryDecoder(hourFirst),
+            segmentStyle = segmentStyle
         )
         SegmentDisplay(
             modifier = digitModifier,
-            decoder = BinaryDecoder(hourSecond)
+            decoder = BinaryDecoder(hourSecond),
+            segmentStyle = segmentStyle
         )
         Delimiter(
             modifier = digitModifier,
@@ -104,11 +126,13 @@ fun DigitalClock(
         )
         SegmentDisplay(
             modifier = digitModifier,
-            decoder = BinaryDecoder(minuteFirst)
+            decoder = BinaryDecoder(minuteFirst),
+            segmentStyle = segmentStyle
         )
         SegmentDisplay(
             modifier = digitModifier,
-            decoder = BinaryDecoder(minuteSecond)
+            decoder = BinaryDecoder(minuteSecond),
+            segmentStyle = segmentStyle
         )
         Delimiter(
             modifier = digitModifier,
@@ -116,11 +140,13 @@ fun DigitalClock(
         )
         SegmentDisplay(
             modifier = digitModifier,
-            decoder = BinaryDecoder(secondFirst)
+            decoder = BinaryDecoder(secondFirst),
+            segmentStyle = segmentStyle
         )
         SegmentDisplay(
             modifier = digitModifier,
-            decoder = BinaryDecoder(secondSecond)
+            decoder = BinaryDecoder(secondSecond),
+            segmentStyle = segmentStyle
         )
     }
 }
@@ -129,9 +155,13 @@ fun DigitalClock(
 fun SegmentDisplay(
     modifier: Modifier = Modifier,
     segmentScale: Int = 4,
-    led: Led = SingleColorLed(Color.Red, Color.DarkGray.copy(alpha = 0.4f)),
+    spacingRatio: Float = 0.2f,
+    led: Led = defaultLed,
+    segmentStyle: SegmentStyle = SegmentStyle.FLAT,
     decoder: Decoder = BinaryDecoder()
 ) {
+    val spacingRatioLimited = remember(spacingRatio) { spacingRatio.coerceIn(0f..0.9f) }
+
     Canvas(modifier = modifier
         .aspectRatio((1f + segmentScale + 1f) / (1f + segmentScale + 1f + segmentScale + 1f), true)
         .size(100.dp)
@@ -169,46 +199,46 @@ fun SegmentDisplay(
             val lOffset = Offset(quarterGapWidth + segmentWidth, segmentLength + segmentWidth * 2)
             val mOffset = Offset(quarterGapWidth + segmentWidth * 2, segmentLength + segmentWidth * 2)
 
-            val aPath = createHorizontalSegmentPath(aOffset, hSize)
-            val bPath = createVerticalSegmentPath(bOffset, vSize)
-            val cPath = createVerticalSegmentPath(cOffset, vSize)
-            val dPath = createHorizontalSegmentPath(dOffset, hSize)
-            val ePath = createVerticalSegmentPath(eOffset, vSize)
-            val fPath = createVerticalSegmentPath(fOffset, vSize)
-            val g1Path = createSmallHorizontalSegmentPath(g1Offset, shSize)
-            val g2Path = createSmallHorizontalSegmentPath(g2Offset, shSize)
-            val hPath = createBackSlashSegmentPath(segmentWidth, hOffset, dSize)
-            val iPath = createSmallVerticalSegmentPath(iOffset, svSize)
-            val jPath = createForwardSlashSegmentPath(segmentWidth, jOffset, dSize)
-            val kPath = createForwardSlashSegmentPath(segmentWidth, kOffset, dSize)
-            val lPath = createSmallVerticalSegmentPath(lOffset, svSize)
-            val mPath = createBackSlashSegmentPath(segmentWidth, mOffset, dSize)
+            val aPath = createHorizontalSegmentPath(aOffset, hSize, spacingRatioLimited)
+            val bPath = createVerticalSegmentPath(bOffset, vSize, spacingRatioLimited)
+            val cPath = createVerticalSegmentPath(cOffset, vSize, spacingRatioLimited)
+            val dPath = createHorizontalSegmentPath(dOffset, hSize, spacingRatioLimited)
+            val ePath = createVerticalSegmentPath(eOffset, vSize, spacingRatioLimited)
+            val fPath = createVerticalSegmentPath(fOffset, vSize, spacingRatioLimited)
+            val g1Path = createSmallHorizontalSegmentPath(g1Offset, shSize, spacingRatioLimited)
+            val g2Path = createSmallHorizontalSegmentPath(g2Offset, shSize, spacingRatioLimited)
+            val hPath = createBackSlashSegmentPath(segmentWidth, hOffset, dSize, spacingRatioLimited)
+            val iPath = createSmallVerticalSegmentPath(iOffset, svSize, spacingRatioLimited)
+            val jPath = createForwardSlashSegmentPath(segmentWidth, jOffset, dSize, spacingRatioLimited)
+            val kPath = createForwardSlashSegmentPath(segmentWidth, kOffset, dSize, spacingRatioLimited)
+            val lPath = createSmallVerticalSegmentPath(lOffset, svSize, spacingRatioLimited)
+            val mPath = createBackSlashSegmentPath(segmentWidth, mOffset, dSize, spacingRatioLimited)
 
             onDrawBehind {
-                drawPath(aPath, led.signal(decoder.a))
-                drawPath(bPath, led.signal(decoder.b))
-                drawPath(cPath, led.signal(decoder.c))
-                drawPath(dPath, led.signal(decoder.d))
-                drawPath(ePath, led.signal(decoder.e))
-                drawPath(fPath, led.signal(decoder.f))
-                drawPath(g1Path, led.signal(decoder.g1))
-                drawPath(g2Path, led.signal(decoder.g2))
-                drawPath(hPath, led.signal(decoder.h))
-                drawPath(iPath, led.signal(decoder.i))
-                drawPath(jPath, led.signal(decoder.j))
-                drawPath(kPath, led.signal(decoder.k))
-                drawPath(lPath, led.signal(decoder.l))
-                drawPath(mPath, led.signal(decoder.m))
+                drawSegment(led.signal(decoder.a), segmentStyle, aPath)
+                drawSegment(led.signal(decoder.b), segmentStyle, bPath)
+                drawSegment(led.signal(decoder.c), segmentStyle, cPath)
+                drawSegment(led.signal(decoder.d), segmentStyle, dPath)
+                drawSegment(led.signal(decoder.e), segmentStyle, ePath)
+                drawSegment(led.signal(decoder.f), segmentStyle, fPath)
+                drawSegment(led.signal(decoder.g1), segmentStyle, g1Path)
+                drawSegment(led.signal(decoder.g2), segmentStyle, g2Path)
+                drawSegment(led.signal(decoder.h), segmentStyle, hPath)
+                drawSegment(led.signal(decoder.i), segmentStyle, iPath)
+                drawSegment(led.signal(decoder.j), segmentStyle, jPath)
+                drawSegment(led.signal(decoder.k), segmentStyle, kPath)
+                drawSegment(led.signal(decoder.l), segmentStyle, lPath)
+                drawSegment(led.signal(decoder.m), segmentStyle, mPath)
             }
         }
     ) {}
 }
 
-private fun createHorizontalSegmentPath(offset: Offset, size: Size): Path {
+private fun createHorizontalSegmentPath(offset: Offset, size: Size, spacingRatio: Float): Path {
     val radius = size.minDimension / 2
     val centerX = offset.x + size.width / 2
     val centerY = offset.y + size.height / 2
-    val spacing = radius / 10
+    val spacing = radius * spacingRatio
     return Path().apply {
         moveTo(centerX - size.width / 2, centerY + radius - spacing)
         lineTo(centerX - size.width / 2 - radius + spacing, centerY)
@@ -220,11 +250,11 @@ private fun createHorizontalSegmentPath(offset: Offset, size: Size): Path {
     }
 }
 
-private fun createVerticalSegmentPath(offset: Offset, size: Size): Path {
+private fun createVerticalSegmentPath(offset: Offset, size: Size, spacingRatio: Float): Path {
     val radius = size.minDimension / 2
     val centerX = offset.x + size.width / 2
     val centerY = offset.y + size.height / 2
-    val spacing = radius / 10
+    val spacing = radius * spacingRatio
     return Path().apply {
         moveTo(centerX, centerY + radius + size.height / 2 - spacing)
         lineTo(centerX - radius + spacing, centerY + size.height / 2)
@@ -236,11 +266,11 @@ private fun createVerticalSegmentPath(offset: Offset, size: Size): Path {
     }
 }
 
-private fun createSmallHorizontalSegmentPath(offset: Offset, size: Size): Path {
+private fun createSmallHorizontalSegmentPath(offset: Offset, size: Size, spacingRatio: Float): Path {
     val radius = size.minDimension / 2
     val centerX = offset.x + size.width / 2
     val centerY = offset.y + size.height / 2
-    val spacing = radius / 10
+    val spacing = radius * spacingRatio
     return Path().apply {
         moveTo(centerX - size.width / 2, centerY + radius - spacing)
         lineTo(centerX - size.width / 2 - radius + spacing, centerY)
@@ -252,11 +282,11 @@ private fun createSmallHorizontalSegmentPath(offset: Offset, size: Size): Path {
     }
 }
 
-private fun createSmallVerticalSegmentPath(offset: Offset, size: Size): Path {
+private fun createSmallVerticalSegmentPath(offset: Offset, size: Size, spacingRatio: Float): Path {
     val radius = size.minDimension / 2
     val centerX = offset.x + size.width / 2
     val centerY = offset.y + size.height / 2
-    val spacing = radius / 10
+    val spacing = radius * spacingRatio
     return Path().apply {
         moveTo(centerX, centerY + radius + size.height / 2 - spacing)
         lineTo(centerX - radius + spacing, centerY + size.height / 2)
@@ -268,9 +298,9 @@ private fun createSmallVerticalSegmentPath(offset: Offset, size: Size): Path {
     }
 }
 
-private fun createBackSlashSegmentPath(width: Float, offset: Offset, size: Size): Path {
+private fun createBackSlashSegmentPath(width: Float, offset: Offset, size: Size, spacingRatio: Float): Path {
     val diagonalWidth = sqrt(width.pow(2) / 2) * 2
-    val spacing = diagonalWidth / 40
+    val spacing = (diagonalWidth / 4) * spacingRatio
     return Path().apply {
         moveTo(offset.x + spacing, offset.y + spacing)
         lineTo(offset.x + size.width - spacing, offset.y + size.height - diagonalWidth)
@@ -280,9 +310,9 @@ private fun createBackSlashSegmentPath(width: Float, offset: Offset, size: Size)
     }
 }
 
-private fun createForwardSlashSegmentPath(width: Float, offset: Offset, size: Size): Path {
+private fun createForwardSlashSegmentPath(width: Float, offset: Offset, size: Size, spacingRatio: Float): Path {
     val diagonalWidth = sqrt(width.pow(2) / 2) * 2
-    val spacing = diagonalWidth / 40
+    val spacing = (diagonalWidth / 4) * spacingRatio
     return Path().apply {
         moveTo(offset.x + spacing, offset.y + size.height - spacing)
         lineTo(offset.x + spacing, offset.y + size.height - diagonalWidth)
@@ -291,4 +321,39 @@ private fun createForwardSlashSegmentPath(width: Float, offset: Offset, size: Si
         close()
     }
 }
+
+private fun DrawScope.drawSegment(
+    color: Color,
+    segmentStyle: SegmentStyle,
+    path: Path
+) {
+    val finalBrush = if (segmentStyle == SegmentStyle.FLAT) {
+        null
+    } else {
+        val bounds = path.getBounds()
+        color.toLedBrush(bounds.center)
+    }
+
+    if (finalBrush != null) {
+        drawPath(path, finalBrush)
+    } else {
+        drawPath(path, color)
+    }
+}
+
+private val defaultLed = SingleColorLed(Color.Red, Color.DarkGray.copy(alpha = 0.4f))
+
+private const val diffuserFactor = 0.4f
+
+private fun Color.toLedBrush(center: Offset) = Brush.radialGradient(
+    colors = listOf(this, darker),
+    center = center
+)
+
+private val Color.darker
+    get() = copy(
+        red = red * diffuserFactor,
+        green = green * diffuserFactor,
+        blue = blue * diffuserFactor
+    )
 
