@@ -209,7 +209,8 @@ fun DigitalClock(
     minuteSecond: Int = 0,
     secondFirst: Int = 0,
     secondSecond: Int = 0,
-    delimiterSignal: Int = 0
+    delimiterSignal: Int = 0,
+    segmentStyle: SegmentStyle = SegmentStyle.DIFFUSER
 ) {
     Row(modifier = modifier) {
         val digitModifier = Modifier
@@ -219,12 +220,12 @@ fun DigitalClock(
         SegmentDisplay(
             modifier = digitModifier,
             decoder = BinaryDecoder(hourFirst),
-            segmentStyle = SegmentStyle.DIFFUSER
+            segmentStyle = segmentStyle
         )
         SegmentDisplay(
             modifier = digitModifier,
             decoder = BinaryDecoder(hourSecond),
-            segmentStyle = SegmentStyle.DIFFUSER
+            segmentStyle = segmentStyle
         )
         Delimiter(
             modifier = digitModifier,
@@ -233,12 +234,12 @@ fun DigitalClock(
         SegmentDisplay(
             modifier = digitModifier,
             decoder = BinaryDecoder(minuteFirst),
-            segmentStyle = SegmentStyle.DIFFUSER
+            segmentStyle = segmentStyle
         )
         SegmentDisplay(
             modifier = digitModifier,
             decoder = BinaryDecoder(minuteSecond),
-            segmentStyle = SegmentStyle.DIFFUSER
+            segmentStyle = segmentStyle
         )
         Delimiter(
             modifier = digitModifier,
@@ -247,12 +248,12 @@ fun DigitalClock(
         SegmentDisplay(
             modifier = digitModifier,
             decoder = BinaryDecoder(secondFirst),
-            segmentStyle = SegmentStyle.DIFFUSER
+            segmentStyle = segmentStyle
         )
         SegmentDisplay(
             modifier = digitModifier,
             decoder = BinaryDecoder(secondSecond),
-            segmentStyle = SegmentStyle.DIFFUSER
+            segmentStyle = segmentStyle
         )
     }
 }

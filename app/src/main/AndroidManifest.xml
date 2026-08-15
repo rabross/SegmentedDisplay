@@ -20,6 +20,7 @@
         <activity android:name=".FourteenSegmentActivity" android:exported="false" />
         <activity android:name=".SevenSegmentHeartActivity" android:exported="false" />
         <activity android:name=".SevenSegmentScreenActivity" android:exported="true" />
+        <activity android:name=".DigitalClockActivity" android:exported="true" />
     </application>
 
 </manifest>

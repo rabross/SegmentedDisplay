@@ -25,6 +25,7 @@ class SampleIndexActivity : ComponentActivity() {
                 LaunchButton<FourteenSegmentActivity>(text = "14-segment display")
                 LaunchButton<TypingActivity>(text = "14-segment display typing")
                 LaunchButton<SevenSegmentScreenActivity>(text = "Displaying an image")
+                LaunchButton<DigitalClockActivity>(text = "Digital Clock")
             }
         }
     }
