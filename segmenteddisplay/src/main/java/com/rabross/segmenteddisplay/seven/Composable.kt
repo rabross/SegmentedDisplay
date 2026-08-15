@@ -1,13 +1,19 @@
 package com.rabross.segmenteddisplay.seven
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Offset
@@ -59,6 +65,28 @@ fun DigitalClockPreview() {
             secondSecond = mapToDisplay(6),
             delimiterSignal = 3
         )
+    }
+}
+
+@Preview(widthDp = 300, heightDp = 300
+)
+@Composable
+fun AlphabetPreview() {
+    val numbers = (0..9).toList()
+    Surface(color = Color.Black, modifier = Modifier.size(400.dp)) {
+        LazyVerticalGrid(
+            columns = GridCells.Adaptive(50.dp),
+            contentPadding = PaddingValues(8.dp)
+        ) {
+            items(numbers) { char ->
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    SegmentDisplay(
+                        modifier = Modifier.padding(2.dp),
+                        decoder = BinaryDecoder(BinaryDecoder.mapToDisplay(char))
+                    )
+                }
+            }
+        }
     }
 }
 
