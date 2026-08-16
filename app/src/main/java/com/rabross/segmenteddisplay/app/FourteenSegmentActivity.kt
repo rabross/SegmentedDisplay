@@ -7,12 +7,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Surface
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.lifecycleScope
 import com.rabross.segmenteddisplay.fourteen.BinaryDecoder
 import com.rabross.segmenteddisplay.fourteen.DigitalClock
 import com.rabross.segmenteddisplay.fourteen.SegmentDisplay
@@ -136,28 +136,30 @@ class FourteenSegmentActivity : ComponentActivity() {
                 }
             }
 
-            tickerFlow(Duration.seconds(1))
-                .map { Calendar.getInstance() }
-                .distinctUntilChanged { old, new ->
-                    old.get(Calendar.SECOND) == new.get(Calendar.SECOND)
-                }
-                .onEach { calendar ->
-                    val hour = calendar.get(Calendar.HOUR_OF_DAY)
-                    val hourDigits = hour.splitDigits()
-                    hourFirst.value = hourDigits.first
-                    hourSecond.value = hourDigits.second
+            LaunchedEffect(Unit) {
+                tickerFlow(Duration.seconds(1))
+                    .map { Calendar.getInstance() }
+                    .distinctUntilChanged { old, new ->
+                        old.get(Calendar.SECOND) == new.get(Calendar.SECOND)
+                    }
+                    .onEach { calendar ->
+                        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+                        val hourDigits = hour.splitDigits()
+                        hourFirst.value = hourDigits.first
+                        hourSecond.value = hourDigits.second
 
-                    val minute = calendar.get(Calendar.MINUTE)
-                    val minuteDigits = minute.splitDigits()
-                    minuteFirst.value = minuteDigits.first
-                    minuteSecond.value = minuteDigits.second
+                        val minute = calendar.get(Calendar.MINUTE)
+                        val minuteDigits = minute.splitDigits()
+                        minuteFirst.value = minuteDigits.first
+                        minuteSecond.value = minuteDigits.second
 
-                    val second = calendar.get(Calendar.SECOND)
-                    val secondDigits = second.splitDigits()
-                    secondFirst.value = secondDigits.first
-                    secondSecond.value = secondDigits.second
-                }
-                .launchIn(lifecycleScope)
+                        val second = calendar.get(Calendar.SECOND)
+                        val secondDigits = second.splitDigits()
+                        secondFirst.value = secondDigits.first
+                        secondSecond.value = secondDigits.second
+                    }
+                    .launchIn(this)
+            }
         }
     }
 
