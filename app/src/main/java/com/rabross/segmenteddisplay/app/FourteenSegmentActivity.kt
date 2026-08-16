@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.isActive
 import java.util.*
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 import kotlin.time.ExperimentalTime
 
 @OptIn(ExperimentalTime::class)
@@ -137,7 +138,7 @@ class FourteenSegmentActivity : ComponentActivity() {
             }
 
             LaunchedEffect(Unit) {
-                tickerFlow(Duration.seconds(1))
+                tickerFlow(1.seconds)
                     .map { Calendar.getInstance() }
                     .distinctUntilChanged { old, new ->
                         old.get(Calendar.SECOND) == new.get(Calendar.SECOND)
